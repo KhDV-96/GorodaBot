@@ -1,8 +1,16 @@
 package com.onedayfirm.gorodabot;
 
+import com.onedayfirm.gorodabot.bot.Bot;
+
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("This is just the beginning...");
+        var scanner = new Scanner(System.in);
+        var bot = new Bot();
+        bot.onConnection(0).forEach(System.out::println);
+        while (true)
+            bot.onMessage(0, scanner.nextLine()).forEach(System.out::println);
     }
 }
