@@ -1,11 +1,13 @@
 package com.onedayfirm.gorodabot.goroda;
 
 import java.util.HashSet;
+import java.util.Random;
 
 public class GorodaGame {
 
     private HashSet<String> usedCities;
     private FileCitiesStorage storage;
+    private String previousCity;
 
     GorodaGame() {
         usedCities = new HashSet<>();
@@ -13,6 +15,7 @@ public class GorodaGame {
     }
 
     public String makeTurn(String city) {
+        previousCity = city;
         var lastLetter = getLastCharOfCity(city);
         var citiesOnLastLetter = storage.getCitiesByLetter(lastLetter);
         for (var cityName : citiesOnLastLetter) {
@@ -26,15 +29,30 @@ public class GorodaGame {
 
     public boolean isValidCity(String city) {
         var firstChar = city.charAt(0);
-        return storage.getCitiesByLetter(firstChar).contains(city);
+        if (this.previousCity == null) {
+            return storage.getCitiesByLetter(firstChar).contains(city);
+        } else {
+            if (getLastCharOfCity(previousCity) == firstChar) {
+                return storage.getCitiesByLetter(firstChar).contains(city);
+            }
+            return false;
+        }
+
     }
 
-    private void addUsedCity(String city) {
-        usedCities.add(city);
+    public String makeFirstTurn() {
+        var cities = storage.getCitiesByLetter('a');
+        var random = new Random();
+        var cityCount = random.nextInt(cities.toArray().length);
+        return cities.get(cityCount);
     }
 
     public boolean isCityUsed(String city) {
         return usedCities.contains(city);
+    }
+
+    private void addUsedCity(String city) {
+        usedCities.add(city);
     }
 
     private Character getLastCharOfCity(String city) {

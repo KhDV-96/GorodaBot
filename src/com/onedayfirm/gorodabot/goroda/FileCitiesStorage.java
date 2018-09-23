@@ -18,7 +18,7 @@ public class FileCitiesStorage implements CitiesStorage {
         setCitiesFromFile("resources/parsed_cities.txt");
     }
 
-    public static synchronized FileCitiesStorage getInstance() {
+    public static FileCitiesStorage getInstance() {
         if (instance == null) {
             instance = new FileCitiesStorage();
         }
