@@ -17,6 +17,9 @@ public class GorodaGame {
     public String makeTurn(String city) {
         var lastLetter = getLastCharOfCity(city);
         var citiesOnLastLetter = storage.getCitiesByLetter(lastLetter);
+        if (citiesOnLastLetter == null){
+            return null;
+        }
         for (var cityName : citiesOnLastLetter) {
             if (!isCityUsed(cityName)) {
                 previousCity = city;
@@ -29,6 +32,10 @@ public class GorodaGame {
 
     public boolean isValidCity(String city) {
         var firstChar = city.charAt(0);
+        var citiesList = storage.getCitiesByLetter(firstChar);
+        if (citiesList == null){
+            return false;
+        }
         if (this.previousCity == null) {
             return storage.getCitiesByLetter(firstChar).contains(city);
         } else {
