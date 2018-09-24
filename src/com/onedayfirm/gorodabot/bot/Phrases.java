@@ -5,14 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class Phrases {
 
     private static final String PATH = "resources/phrases.txt";
     private static final String SEPARATOR = " ~ ";
 
-    private static Phrases ourInstance = new Phrases();
+    private static Phrases instance = new Phrases();
 
     private HashMap<String, String> phrases;
 
@@ -27,7 +26,7 @@ class Phrases {
     }
 
     static Phrases getInstance() {
-        return ourInstance;
+        return instance;
     }
 
     String getPhrase(String key) {
@@ -35,7 +34,7 @@ class Phrases {
     }
 
     private List<String> load() throws IOException {
-        return Files.lines(Paths.get(PATH)).collect(Collectors.toList());
+        return Files.readAllLines(Paths.get(PATH));
     }
 
     private void parse(List<String> lines) {
