@@ -1,16 +1,15 @@
 package com.onedayfirm.gorodabot;
 
 import com.onedayfirm.gorodabot.bot.GorodaBot;
-
-import java.util.Scanner;
+import com.onedayfirm.gorodabot.clients.TerminalClient;
+import com.onedayfirm.gorodabot.controllers.SimpleController;
 
 public class Main {
 
     public static void main(String[] args) {
-        var scanner = new Scanner(System.in);
         var bot = new GorodaBot();
-        bot.onConnection(0).forEach(System.out::println);
-        while (true)
-            bot.onMessage(0, scanner.nextLine()).forEach(System.out::println);
+        var client = new TerminalClient();
+        new SimpleController(bot, client);
+        client.receive();
     }
 }
