@@ -2,8 +2,6 @@ package com.onedayfirm.gorodabot.goroda;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Method;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GorodaGameTest {
@@ -86,7 +84,6 @@ class GorodaGameTest {
     @Test
     void isValidCityAfterFirstTurn() {
         var game = new GorodaGame();
-        var botCity = game.makeFirstTurn();
 
         assertTrue(game.isValidCity("сочи"));
     }
@@ -105,6 +102,19 @@ class GorodaGameTest {
         var city = "Фуубар";
 
         assertFalse(game.isValidCity(city));
+    }
+
+    @Test
+    void isCorrectTurnTrue() {
+        var game1 = new GorodaGame();
+        var game2 = new GorodaGame();
+
+        var city1 = game1.makeFirstTurn();
+        var city2 = game2.makeTurn(city1);
+        var city3 = game1.makeTurn(city2);
+        var city4 = game2.makeTurn(city3);
+
+        assertTrue(game1.isCorrectTurn(city4));
     }
 /*
     @Test
