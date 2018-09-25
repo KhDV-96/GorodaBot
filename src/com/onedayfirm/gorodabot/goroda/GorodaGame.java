@@ -17,7 +17,7 @@ public class GorodaGame {
     public String makeTurn(String city) {
         var lastLetter = getLastCharOfCity(city);
         var citiesOnLastLetter = storage.getCitiesByLetter(lastLetter);
-        if (citiesOnLastLetter == null){
+        if (citiesOnLastLetter == null) {
             return null;
         }
         for (var cityName : citiesOnLastLetter) {
@@ -33,18 +33,16 @@ public class GorodaGame {
     public boolean isValidCity(String city) {
         var firstChar = city.charAt(0);
         var citiesList = storage.getCitiesByLetter(firstChar);
-        if (citiesList == null){
+        if (citiesList == null) {
             return false;
         }
-        if (this.previousCity == null) {
+        if (previousCity == null) {
             return storage.getCitiesByLetter(firstChar).contains(city);
-        } else {
-            if (getLastCharOfCity(previousCity) == firstChar) {
-                return storage.getCitiesByLetter(firstChar).contains(city);
-            }
-            return false;
         }
-
+        if (getLastCharOfCity(previousCity) == firstChar) {
+            return storage.getCitiesByLetter(firstChar).contains(city);
+        }
+        return false;
     }
 
     public String makeFirstTurn() {
@@ -54,10 +52,9 @@ public class GorodaGame {
         }
         var random = new Random();
         var cityCount = random.nextInt(cities.toArray().length);
-        var botCity = cities.get(cityCount);
-        previousCity = botCity;
-        addUsedCity(botCity);
-        return botCity;
+        previousCity = cities.get(cityCount);
+        addUsedCity(previousCity);
+        return previousCity;
     }
 
     public boolean isCityUsed(String city) {

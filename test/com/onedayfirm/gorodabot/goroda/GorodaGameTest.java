@@ -26,15 +26,16 @@ class GorodaGameTest {
     }
 
     @Test
-    void isValidCityTrue() {
+    void isValidCityFalse() {
         var game = new GorodaGame();
         var city = game.makeFirstTurn();
 
-        assertTrue(game.isValidCity(city));
+        assertFalse(game.isValidCity(city));
+        assertTrue(game.isCityUsed(city));
     }
 
     @Test
-    void isValidCityFalse() {
+    void isValidCityFalse2() {
         var game = new GorodaGame();
 
         assertFalse(game.isValidCity("foobar"));
