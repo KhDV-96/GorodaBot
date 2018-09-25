@@ -1,5 +1,7 @@
 package com.onedayfirm.gorodabot.bot;
 
+import com.onedayfirm.gorodabot.goroda.GorodaGame;
+
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -23,6 +25,17 @@ public class GorodaBot implements Bot {
     }
 
     public void onMessage(int id, String message, Collection<String> responses) {
-        responses.add(String.format("[%d] Message: %s", id, message));
+        if (message.equals("/game")) {
+            var game = new GorodaGame();
+            sessions.get(id).setGorodaGame(game);
+            responses.add(game.makeFirstTurn());
+        } else if (sessions.get(id).getGorodaGame() != null) {
+            if (sessions.get(id).getGorodaGame().isValidCity(message))
+                responses.add(sessions.get(id).getGorodaGame().makeTurn(message));
+            else
+                responses.add(phrases.getPhrase("UNKNOWN CITY"));
+        } else {
+            responses.add(phrases.getPhrase("UNKNOWN COMMAND"));
+        }
     }
 }

@@ -24,6 +24,8 @@ public class SimpleController implements Controller {
     public void handleMessage(Client client, int id, String message) {
         if (!bot.isUserConnected(id))
             handleConnection(client, id);
+        if (message.isEmpty())
+            return;
         var responses = new LinkedList<String>();
         bot.onMessage(id, message, responses);
         responses.forEach(text -> client.send(id, text));
