@@ -6,7 +6,7 @@ import java.util.Random;
 public class GorodaGame {
 
     private HashSet<String> usedCities;
-    private FileCitiesStorage storage;
+    private CitiesStorage storage;
     private String previousCity = "";
 
     public GorodaGame() {
@@ -41,12 +41,16 @@ public class GorodaGame {
         return storage.getCitiesByLetter(firstChar).contains(city);
     }
 
-    public boolean hasCorrectLetters(String city){
+    private boolean hasCorrectLetters(String city){
         var firstChar = city.charAt(0);
         if (previousCity == null) {
             return true;
         }
         return getLastCharOfCity(previousCity) == firstChar;
+    }
+
+    public boolean isCorrectTurn(String city){
+        return isValidCity(city) && hasCorrectLetters(city);
     }
 
     public String makeFirstTurn() {
@@ -74,7 +78,7 @@ public class GorodaGame {
         usedCities.add(city);
     }
 
-    public Character getLastCharOfCity(String city) {
+    private static Character getLastCharOfCity(String city) {
         if ((city.endsWith("ь")) || (city.endsWith("ъ")) || (city.endsWith("ы"))) {
             return city.charAt(city.length() - 2);
         }
