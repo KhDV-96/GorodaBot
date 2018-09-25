@@ -7,14 +7,15 @@ public class GorodaGame {
 
     private HashSet<String> usedCities;
     private FileCitiesStorage storage;
-    private String previousCity;
+    private String previousCity = "";
 
-    GorodaGame() {
+    public GorodaGame() {
         usedCities = new HashSet<>();
         storage = FileCitiesStorage.getInstance();
     }
 
     public String makeTurn(String city) {
+        city = city.toLowerCase();
         var lastLetter = getLastCharOfCity(city);
         var citiesOnLastLetter = storage.getCitiesByLetter(lastLetter);
         if (citiesOnLastLetter == null) {
@@ -31,28 +32,36 @@ public class GorodaGame {
     }
 
     public boolean isValidCity(String city) {
+        city = city.toLowerCase();
         var firstChar = city.charAt(0);
         var citiesList = storage.getCitiesByLetter(firstChar);
         if (citiesList == null) {
             return false;
         }
+        return storage.getCitiesByLetter(firstChar).contains(city);
+    }
+
+    public boolean hasCorrectLetters(String city){
+        var firstChar = city.charAt(0);
         if (previousCity == null) {
-            return storage.getCitiesByLetter(firstChar).contains(city);
+            return true;
         }
-        if (getLastCharOfCity(previousCity) == firstChar) {
-            return storage.getCitiesByLetter(firstChar).contains(city);
-        }
-        return false;
+        return getLastCharOfCity(previousCity) == firstChar;
     }
 
     public String makeFirstTurn() {
-        var cities = storage.getCitiesByLetter('а');
+        var firstCharacters = storage.getAvaivableFirstCharacters().toArray();
+        var random = new Random();
+        if (firstCharacters == null){
+            return null;
+        }
+        var characterNumber = random.nextInt(firstCharacters.length);
+        var cities = storage.getCitiesByLetter((char)firstCharacters[characterNumber]);
         if (cities == null) {
             return null;
         }
-        var random = new Random();
-        var cityCount = random.nextInt(cities.toArray().length);
-        previousCity = cities.get(cityCount);
+        var cityNumber = random.nextInt(cities.toArray().length);
+        previousCity = cities.get(cityNumber);
         addUsedCity(previousCity);
         return previousCity;
     }
@@ -65,7 +74,7 @@ public class GorodaGame {
         usedCities.add(city);
     }
 
-    private Character getLastCharOfCity(String city) {
+    public Character getLastCharOfCity(String city) {
         if ((city.endsWith("ь")) || (city.endsWith("ъ")) || (city.endsWith("ы"))) {
             return city.charAt(city.length() - 2);
         }

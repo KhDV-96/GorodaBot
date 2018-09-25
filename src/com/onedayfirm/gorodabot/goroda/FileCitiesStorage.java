@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class FileCitiesStorage implements CitiesStorage {
 
@@ -31,6 +32,15 @@ public class FileCitiesStorage implements CitiesStorage {
         }
         return null;
     }
+
+    @Override
+    public Set<Character> getAvaivableFirstCharacters() {
+        if (cities == null){
+            return null;
+        }
+        return cities.keySet();
+    }
+
 
     private void addCityToStorage(String city) {
         city = city.toLowerCase();
