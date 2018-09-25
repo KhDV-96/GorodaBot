@@ -1,8 +1,7 @@
 package com.onedayfirm.gorodabot.bot;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class GorodaBot implements Bot {
 
@@ -17,17 +16,13 @@ public class GorodaBot implements Bot {
         return sessions.containsKey(id);
     }
 
-    public List<String> onConnection(int id) {
+    public void onConnection(int id, Collection<String> responses) {
         sessions.put(id, new Session());
-        var response = new ArrayList<String>();
-        response.add(phrases.getPhrase("GREETING"));
-        response.add(phrases.getPhrase("HELP"));
-        return response;
+        responses.add(phrases.getPhrase("GREETING"));
+        responses.add(phrases.getPhrase("HELP"));
     }
 
-    public List<String> onMessage(int id, String message) {
-        var response = new ArrayList<String>();
-        response.add(String.format("[%d] Message: %s", id, message));
-        return response;
+    public void onMessage(int id, String message, Collection<String> responses) {
+        responses.add(String.format("[%d] Message: %s", id, message));
     }
 }

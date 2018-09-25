@@ -1,12 +1,12 @@
 package com.onedayfirm.gorodabot.bot;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface Bot {
 
     boolean isUserConnected(int id);
 
-    List<String> onConnection(int id);
+    void onConnection(int id, Collection<String> responses);
 
-    List<String> onMessage(int id, String message);
+    void onMessage(int id, String message, Collection<String> responses);
 }

@@ -17,12 +17,7 @@ class Phrases {
 
     private Phrases() {
         phrases = new HashMap<>();
-        try {
-            parse(load());
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            System.exit(1);
-        }
+        loadPhrases().forEach(this::addPhrase);
     }
 
     static Phrases getInstance() {
@@ -33,14 +28,18 @@ class Phrases {
         return phrases.get(key);
     }
 
-    private List<String> load() throws IOException {
-        return Files.readAllLines(Paths.get(PATH));
+    private List<String> loadPhrases() {
+        try {
+            return Files.readAllLines(Paths.get(PATH));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return null;
     }
 
-    private void parse(List<String> lines) {
-        lines.stream()
-                .filter(s -> !s.isEmpty())
-                .map(s -> s.split(SEPARATOR))
-                .forEach(b -> phrases.put(b[0], b[1]));
+    private void addPhrase(String phrase) {
+        var blocks = phrase.split(SEPARATOR);
+        phrases.put(blocks[0], blocks[1]);
     }
 }
