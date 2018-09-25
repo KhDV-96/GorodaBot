@@ -23,7 +23,7 @@ public class GorodaGame {
         }
         for (var cityName : citiesOnLastLetter) {
             if (!isCityUsed(cityName)) {
-                previousCity = city;
+                previousCity = cityName;
                 addUsedCity(cityName);
                 return cityName;
             }
