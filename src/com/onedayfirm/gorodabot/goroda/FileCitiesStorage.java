@@ -21,7 +21,7 @@ public class FileCitiesStorage implements CitiesStorage {
         loadCities().forEach(this::addCityToStorage);
     }
 
-    public static FileCitiesStorage getInstance() {
+    static FileCitiesStorage getInstance() {
         return instance;
     }
 
@@ -34,7 +34,7 @@ public class FileCitiesStorage implements CitiesStorage {
     }
 
     @Override
-    public Set<Character> getAvaivableFirstCharacters() {
+    public Set<Character> getAvailableLetters() {
         if (cities == null){
             return null;
         }

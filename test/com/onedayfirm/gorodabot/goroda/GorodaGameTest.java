@@ -13,7 +13,6 @@ class GorodaGameTest {
         var secondCity = game.makeTurn(firstCity);
 
         assertNotNull(firstCity);
-        //assertEquals((char)game.getLastCharOfCity(firstCity), secondCity.charAt(0));
         assertTrue(game.isCityUsed(secondCity));
     }
 
@@ -23,6 +22,26 @@ class GorodaGameTest {
         var city = game.makeTurn("foobar");
 
         assertNull(city);
+    }
+
+    @Test
+    void getLastCharOfCity() {
+        var game = new GorodaGame();
+        var storage = FileCitiesStorage.getInstance();
+        var availableLetters = storage.getAvailableLetters();
+        String exceptionCity = "";
+        loop:
+        for (var letter : availableLetters) {
+            for (var city : storage.getCitiesByLetter(letter)) {
+                if (!availableLetters.contains(city.charAt(city.length() - 1))) {
+                    exceptionCity = city;
+                    break loop;
+                }
+            }
+        }
+        var city = game.makeTurn(exceptionCity).toLowerCase();
+
+        assertEquals(exceptionCity.charAt(exceptionCity.length() - 2), city.charAt(0));
     }
 
     @Test
@@ -116,40 +135,16 @@ class GorodaGameTest {
 
         assertTrue(game1.isCorrectTurn(city4));
     }
-/*
-    @Test
-    void getLastCharOfCityb() {
-        var game = new GorodaGame();
-        var city = "Сочь";
-        var letter = 'ч';
 
-        assertEquals(letter, (char)game.getLastCharOfCity(city));
+    @Test
+    void isCorrectTurnFalse() {
+        var game1 = new GorodaGame();
+        var game2 = new GorodaGame();
+
+        var city1 = game1.makeFirstTurn();
+        var city2 = game2.makeTurn(city1);
+        game1.makeTurn(city2);
+
+        assertFalse(game2.isCorrectTurn(city2));
     }
-
-    @Test
-    void getLastCharOfCitybl() {
-        var game = new GorodaGame();
-        var city = "сочы";
-        var letter = 'ч';
-
-        assertEquals(letter, (char)game.getLastCharOfCity(city));
-    }
-
-    @Test
-    void getLastChatOfCity_b() {
-        var game = new GorodaGame();
-        var city = "сочъ";
-        var letter = 'ч';
-
-        assertEquals(letter, (char)game.getLastCharOfCity(city));
-    }
-
-    @Test
-    void getLastCharOfCityCorrect() {
-        var game = new GorodaGame();
-        var city = "сочи";
-        var letter = 'и';
-
-        assertEquals(letter, (char)game.getLastCharOfCity(city));
-    } */
 }
