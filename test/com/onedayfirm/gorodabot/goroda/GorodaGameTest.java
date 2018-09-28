@@ -147,4 +147,14 @@ class GorodaGameTest {
 
         assertFalse(game2.isCorrectTurn(city2));
     }
+
+    @Test
+    void addUsedCity() {
+        var game1 = new GorodaGame();
+        var game2 = new GorodaGame();
+        var city = game1.makeFirstTurn();
+        game2.makeTurn(city);
+
+        assertTrue(game2.isCityUsed(city));
+    }
 }

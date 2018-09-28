@@ -21,6 +21,7 @@ public class GorodaGame {
         if (citiesOnLastLetter == null) {
             return null;
         }
+        addUsedCity(city);
         for (var cityName : citiesOnLastLetter) {
             if (!isCityUsed(cityName)) {
                 previousCity = cityName;
