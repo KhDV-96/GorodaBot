@@ -2,7 +2,7 @@ package com.onedayfirm.gorodabot.clients;
 
 import com.onedayfirm.gorodabot.controllers.Controller;
 
-public abstract class Client {
+public abstract class Client implements Runnable {
 
     private Controller controller;
 
@@ -12,13 +12,13 @@ public abstract class Client {
 
     public abstract void send(int id, String message);
 
-    protected abstract void receive();
+    public abstract void run();
 
     void handleConnection(int id) {
-        controller.handleConnection(this, id);
+        controller.handleConnection(id);
     }
 
     void handleMessage(int id, String text) {
-        controller.handleMessage(this, id, text);
+        controller.handleMessage(id, text);
     }
 }

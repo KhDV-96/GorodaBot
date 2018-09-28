@@ -2,20 +2,20 @@ package com.onedayfirm.gorodabot.clients;
 
 import java.util.Scanner;
 
-public class TerminalClient extends Client {
+public class ConsoleClient extends Client {
 
     private final int id = hashCode();
 
     private Scanner scanner;
 
-    public TerminalClient() {
+    public ConsoleClient() {
         scanner = new Scanner(System.in);
     }
 
     @Override
-    public void receive() {
+    public void run() {
         handleConnection(id);
-        while (true)
+        while (!Thread.interrupted())
             handleMessage(id, scanner.nextLine());
     }
 

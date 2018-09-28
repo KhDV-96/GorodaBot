@@ -9,7 +9,7 @@ import java.util.List;
 class Phrases {
 
     private static final String PATH = "resources/phrases.txt";
-    private static final String SEPARATOR = " ~ ";
+    private static final String SEPARATOR = " ~?? ";
 
     private static Phrases instance = new Phrases();
 

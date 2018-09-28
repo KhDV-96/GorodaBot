@@ -4,13 +4,13 @@ import com.onedayfirm.gorodabot.goroda.GorodaGame;
 
 class Session {
 
-    GorodaGame gorodaGame;
+    private GorodaGame gorodaGame;
 
-    public GorodaGame getGorodaGame() {
+    GorodaGame getGorodaGame() {
         return gorodaGame;
     }
 
-    public void setGorodaGame(GorodaGame gorodaGame) {
+    void setGorodaGame(GorodaGame gorodaGame) {
         this.gorodaGame = gorodaGame;
     }
 }
