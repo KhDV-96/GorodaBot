@@ -25,17 +25,33 @@ public class GorodaBot implements Bot {
     }
 
     public void onMessage(int id, String message, Collection<String> responses) {
+        var session = sessions.get(id);
         if (message.equals("/game")) {
             var game = new GorodaGame();
-            sessions.get(id).setGorodaGame(game);
+            session.setGorodaGame(game);
             responses.add(game.makeFirstTurn());
-        } else if (sessions.get(id).getGorodaGame() != null) {
-            if (sessions.get(id).getGorodaGame().isValidCity(message))
-                responses.add(sessions.get(id).getGorodaGame().makeTurn(message));
-            else
+        } else if (session.getGorodaGame() != null) {
+            if (!session.getGorodaGame().isValidCity(message)) {
                 responses.add(phrases.getPhrase("UNKNOWN CITY"));
+                return;
+            }
+            if (!session.getGorodaGame().isCorrectTurn(message)) {
+                responses.add(phrases.getPhrase("WRONG ANSWER"));
+                return;
+            }
+            if (session.getGorodaGame().isCityUsed(message)) {
+                responses.add(phrases.getPhrase("CITY ALREADY USED"));
+                return;
+            }
+            var city = session.getGorodaGame().makeTurn(message);
+            if (city == null) {
+                responses.add(phrases.getPhrase("LOSE"));
+                session.setGorodaGame(null);
+            } else
+                responses.add(city);
         } else {
             responses.add(phrases.getPhrase("UNKNOWN COMMAND"));
+            responses.add(phrases.getPhrase("HELP"));
         }
     }
 }
