@@ -6,69 +6,82 @@ import java.util.Random;
 public class GorodaGame {
 
     private HashSet<String> usedCities;
-    private FileCitiesStorage storage;
+    private CitiesStorage storage;
     private String previousCity;
 
-    GorodaGame() {
+    public GorodaGame() {
         usedCities = new HashSet<>();
         storage = FileCitiesStorage.getInstance();
     }
 
     public String makeTurn(String city) {
+        city = city.toLowerCase();
         var lastLetter = getLastCharOfCity(city);
         var citiesOnLastLetter = storage.getCitiesByLetter(lastLetter);
         if (citiesOnLastLetter == null) {
             return null;
         }
+        addUsedCity(city);
         for (var cityName : citiesOnLastLetter) {
             if (!isCityUsed(cityName)) {
-                previousCity = city;
+                previousCity = cityName;
                 addUsedCity(cityName);
-                return cityName;
+                return changeFirstLetterToUppercase(cityName);
             }
         }
         return null;
     }
 
     public boolean isValidCity(String city) {
+        city = city.toLowerCase();
         var firstChar = city.charAt(0);
         var citiesList = storage.getCitiesByLetter(firstChar);
         if (citiesList == null) {
             return false;
         }
+        return storage.getCitiesByLetter(firstChar).contains(city);
+    }
+
+    private boolean hasCorrectLetters(String city) {
+        var firstChar = Character.toLowerCase(city.charAt(0));
         if (previousCity == null) {
-            return storage.getCitiesByLetter(firstChar).contains(city);
+            return true;
         }
-        if (getLastCharOfCity(previousCity) == firstChar) {
-            return storage.getCitiesByLetter(firstChar).contains(city);
-        }
-        return false;
+        return getLastCharOfCity(previousCity) == firstChar;
+    }
+
+    public boolean isCorrectTurn(String city) {
+        return isValidCity(city) && hasCorrectLetters(city);
     }
 
     public String makeFirstTurn() {
-        var cities = storage.getCitiesByLetter('а');
-        if (cities == null) {
-            return null;
-        }
+        var firstCharacters = storage.getAvailableLetters().toArray();
         var random = new Random();
-        var cityCount = random.nextInt(cities.toArray().length);
-        previousCity = cities.get(cityCount);
+        var characterNumber = random.nextInt(firstCharacters.length);
+        var cities = storage.getCitiesByLetter((char) firstCharacters[characterNumber]);
+        var cityNumber = random.nextInt(cities.size());
+        previousCity = cities.get(cityNumber);
         addUsedCity(previousCity);
-        return previousCity;
+        return changeFirstLetterToUppercase(previousCity);
     }
 
     public boolean isCityUsed(String city) {
-        return usedCities.contains(city);
+        return usedCities.contains(city.toLowerCase());
     }
 
     private void addUsedCity(String city) {
         usedCities.add(city);
     }
 
-    private Character getLastCharOfCity(String city) {
-        if ((city.endsWith("ь")) || (city.endsWith("ъ")) || (city.endsWith("ы"))) {
-            return city.charAt(city.length() - 2);
+    private char getLastCharOfCity(String city) {
+        var lastLetterIndex = city.length() - 1;
+        if (!storage.getAvailableLetters().contains(city.charAt(lastLetterIndex))) {
+            return city.charAt(lastLetterIndex - 1);
         }
-        return city.charAt(city.length() - 1);
+        return city.charAt(lastLetterIndex);
+    }
+
+    private String changeFirstLetterToUppercase(String word) {
+        return Character.toUpperCase(word.charAt(0)) + word.substring(1);
     }
 }

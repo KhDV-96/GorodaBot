@@ -32,4 +32,13 @@ class FileCitiesStorageTest {
 
         assertNull(cities);
     }
+
+    @Test
+    void getAvailableLetters() {
+        var storage = FileCitiesStorage.getInstance();
+        var letters = storage.getAvailableLetters();
+
+        for (var letter : letters)
+            assertNotNull(storage.getCitiesByLetter(letter));
+    }
 }
