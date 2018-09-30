@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class FileCitiesStorage implements CitiesStorage {
 
-    private static final String PATH = "resources/parsed_cities.txt";
+    private static final String PATH = "resources/cities.txt";
 
     private static FileCitiesStorage instance = new FileCitiesStorage();
 
