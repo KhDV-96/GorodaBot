@@ -14,9 +14,9 @@ public class ConsoleClient extends Client {
 
     @Override
     public void run() {
-        handleConnection(id);
+        getController().handleConnection(id);
         while (!Thread.interrupted())
-            handleMessage(id, scanner.nextLine());
+            getController().handleMessage(id, scanner.nextLine());
     }
 
     @Override

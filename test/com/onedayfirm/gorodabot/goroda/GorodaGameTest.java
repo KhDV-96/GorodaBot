@@ -87,7 +87,7 @@ class GorodaGameTest {
     @Test
     void isValidCityUpperCase() {
         var game = new GorodaGame();
-        var city = "Назарет";
+        var city = game.makeFirstTurn();
 
         assertTrue(game.isValidCity(city));
     }
@@ -95,16 +95,10 @@ class GorodaGameTest {
     @Test
     void isValidCityLowerCase() {
         var game = new GorodaGame();
-        var city = "сочи";
+        var city = new StringBuilder(game.makeFirstTurn());
+        city.setCharAt(0, Character.toLowerCase(city.charAt(0)));
 
-        assertTrue(game.isValidCity(city));
-    }
-
-    @Test
-    void isValidCityAfterFirstTurn() {
-        var game = new GorodaGame();
-
-        assertTrue(game.isValidCity("сочи"));
+        assertTrue(game.isValidCity(city.toString()));
     }
 
     @Test
@@ -116,7 +110,7 @@ class GorodaGameTest {
     }
 
     @Test
-    void isValidCityWrondCityRUS() {
+    void isValidCityWrongCityRUS() {
         var game = new GorodaGame();
         var city = "Фуубар";
 
@@ -145,7 +139,7 @@ class GorodaGameTest {
         var city2 = game2.makeTurn(city1);
         game1.makeTurn(city2);
 
-        assertFalse(game2.isCorrectTurn(city2));
+        assertFalse(game1.isCorrectTurn(city2));
     }
 
     @Test

@@ -1,8 +1,7 @@
 package com.onedayfirm.gorodabot.goroda;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import com.onedayfirm.gorodabot.io.FileReader;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ public class FileCitiesStorage implements CitiesStorage {
 
     private FileCitiesStorage() {
         cities = new HashMap<>();
-        loadCities().forEach(this::addCityToStorage);
+        FileReader.readLines(PATH).forEach(this::addCity);
     }
 
     static FileCitiesStorage getInstance() {
@@ -27,37 +26,21 @@ public class FileCitiesStorage implements CitiesStorage {
 
     @Override
     public List<String> getCitiesByLetter(char letter) {
-        if (cities.containsKey(letter)) {
-            return cities.get(letter);
-        }
-        return null;
+        return cities.getOrDefault(letter, null);
     }
 
     @Override
     public Set<Character> getAvailableLetters() {
-        if (cities == null){
-            return null;
-        }
         return cities.keySet();
     }
 
 
-    private void addCityToStorage(String city) {
+    private void addCity(String city) {
         city = city.toLowerCase();
         var symbol = city.charAt(0);
         if (!cities.containsKey(symbol)) {
             cities.put(symbol, new ArrayList<>());
         }
         cities.get(symbol).add(city);
-    }
-
-    private List<String> loadCities() {
-        try {
-            return Files.readAllLines(Paths.get(PATH));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        return null;
     }
 }

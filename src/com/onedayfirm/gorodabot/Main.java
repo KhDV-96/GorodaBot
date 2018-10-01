@@ -10,5 +10,6 @@ public class Main {
         var bot = new GorodaBot();
         var client = new ConsoleClient();
         new SimpleController(bot, client);
+        client.run();
     }
 }

@@ -6,6 +6,10 @@ public abstract class Client implements Runnable {
 
     private Controller controller;
 
+    Controller getController() {
+        return controller;
+    }
+
     public void setController(Controller controller) {
         this.controller = controller;
     }
@@ -13,12 +17,4 @@ public abstract class Client implements Runnable {
     public abstract void send(int id, String message);
 
     public abstract void run();
-
-    void handleConnection(int id) {
-        controller.handleConnection(id);
-    }
-
-    void handleMessage(int id, String text) {
-        controller.handleMessage(id, text);
-    }
 }

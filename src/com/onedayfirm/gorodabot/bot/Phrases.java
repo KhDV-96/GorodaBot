@@ -1,10 +1,8 @@
 package com.onedayfirm.gorodabot.bot;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import com.onedayfirm.gorodabot.io.FileReader;
+
 import java.util.HashMap;
-import java.util.List;
 
 class Phrases {
 
@@ -17,7 +15,7 @@ class Phrases {
 
     private Phrases() {
         phrases = new HashMap<>();
-        loadPhrases().forEach(this::addPhrase);
+        FileReader.readLines(PATH).forEach(this::addPhrase);
     }
 
     static Phrases getInstance() {
@@ -26,16 +24,6 @@ class Phrases {
 
     String getPhrase(String key) {
         return phrases.get(key);
-    }
-
-    private List<String> loadPhrases() {
-        try {
-            return Files.readAllLines(Paths.get(PATH));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        return null;
     }
 
     private void addPhrase(String phrase) {

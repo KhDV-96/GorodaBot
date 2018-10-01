@@ -14,7 +14,6 @@ public class SimpleController implements Controller {
         this.bot = bot;
         this.client = client;
         client.setController(this);
-        client.run();
     }
 
     public void handleConnection(int id) {
