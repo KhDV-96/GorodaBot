@@ -4,7 +4,7 @@ import com.onedayfirm.gorodabot.io.FileReader;
 
 import java.util.HashMap;
 
-class Phrases {
+public class Phrases {
 
     private static final String PATH = "resources/phrases.txt";
     private static final String SEPARATOR = " ~?? ";
@@ -18,11 +18,11 @@ class Phrases {
         FileReader.readLines(PATH).forEach(this::addPhrase);
     }
 
-    static Phrases getInstance() {
+    public static Phrases getInstance() {
         return instance;
     }
 
-    String getPhrase(String key) {
+    public String getPhrase(String key) {
         return phrases.get(key);
     }
 

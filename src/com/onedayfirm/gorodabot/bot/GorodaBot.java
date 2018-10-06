@@ -1,16 +1,22 @@
 package com.onedayfirm.gorodabot.bot;
 
-import com.onedayfirm.gorodabot.goroda.GorodaGame;
+import com.onedayfirm.gorodabot.handlers.Handler;
 
 import java.util.Collection;
 import java.util.HashMap;
+
+import static com.onedayfirm.gorodabot.handlers.CommandHandler.isCommand;
 
 public class GorodaBot implements Bot {
 
     private HashMap<Integer, Session> sessions;
     private Phrases phrases = Phrases.getInstance();
+    private Handler commandHandler;
+    private Handler messageHandler;
 
-    public GorodaBot() {
+    public GorodaBot(Handler commandHandler, Handler messageHandler) {
+        this.commandHandler = commandHandler;
+        this.messageHandler = messageHandler;
         sessions = new HashMap<>();
     }
 
@@ -27,39 +33,7 @@ public class GorodaBot implements Bot {
 
     public void onMessage(int id, String message, Collection<String> responses) {
         var session = sessions.get(id);
-        if (message.equals("/help")) {
-            responses.add(phrases.getPhrase("ABOUT"));
-            responses.add(phrases.getPhrase("HELP"));
-        } else if (message.equals("/game")) {
-            var game = new GorodaGame();
-            session.setGorodaGame(game);
-            responses.add(game.makeFirstTurn());
-        } else if (session.getGorodaGame() != null) {
-            handleGorodaGameTurn(session, message, responses);
-        } else {
-            responses.add(phrases.getPhrase("UNKNOWN COMMAND"));
-            responses.add(phrases.getPhrase("HELP"));
-        }
-    }
-
-    private void handleGorodaGameTurn(Session session, String message, Collection<String> responses) {
-        if (!session.getGorodaGame().isValidCity(message)) {
-            responses.add(phrases.getPhrase("UNKNOWN CITY"));
-            return;
-        }
-        if (!session.getGorodaGame().isCorrectTurn(message)) {
-            responses.add(phrases.getPhrase("WRONG ANSWER"));
-            return;
-        }
-        if (session.getGorodaGame().isCityUsed(message)) {
-            responses.add(phrases.getPhrase("CITY ALREADY USED"));
-            return;
-        }
-        var city = session.getGorodaGame().makeTurn(message);
-        if (city == null) {
-            responses.add(phrases.getPhrase("LOSE"));
-            session.setGorodaGame(null);
-        } else
-            responses.add(city);
+        var handler = isCommand(message) ? commandHandler : messageHandler;
+        handler.handle(message, session, responses);
     }
 }

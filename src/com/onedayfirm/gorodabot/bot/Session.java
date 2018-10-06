@@ -2,15 +2,15 @@ package com.onedayfirm.gorodabot.bot;
 
 import com.onedayfirm.gorodabot.goroda.GorodaGame;
 
-class Session {
+public class Session {
 
     private GorodaGame gorodaGame;
 
-    GorodaGame getGorodaGame() {
+    public GorodaGame getGorodaGame() {
         return gorodaGame;
     }
 
-    void setGorodaGame(GorodaGame gorodaGame) {
+    public void setGorodaGame(GorodaGame gorodaGame) {
         this.gorodaGame = gorodaGame;
     }
 }
