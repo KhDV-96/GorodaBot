@@ -1,30 +1,21 @@
 package com.onedayfirm.gorodabot.handlers;
 
-import com.onedayfirm.gorodabot.bot.Session;
-
 import java.util.Collection;
+import java.util.LinkedList;
 
-public abstract class CommandHandler extends Handler {
+public abstract class CommandHandler implements Handler {
 
-    private static final String COMMAND_PREFIX = "/";
+    private Collection<String> commands;
 
-    private String command;
-
-    CommandHandler(String command) {
-        this.command = command;
+    CommandHandler() {
+        commands = new LinkedList<>();
     }
 
-    @Override
-    public void handle(String message, Session session, Collection<String> responses) {
-        if (command.equals(message))
-            reply(message, session, responses);
-        else if (getNext() == null)
-            onUnhandled(responses);
-        else
-            getNext().handle(message, session, responses);
+    public final Collection<String> getCommands() {
+        return commands;
     }
 
-    public static boolean isCommand(String str) {
-        return str.startsWith(COMMAND_PREFIX);
+    void addCommand(String command) {
+        commands.add(command);
     }
 }
