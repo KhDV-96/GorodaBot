@@ -2,10 +2,13 @@ package com.onedayfirm.gorodabot.handlers;
 
 import com.onedayfirm.gorodabot.bot.Phrases;
 import com.onedayfirm.gorodabot.bot.Session;
+import com.onedayfirm.gorodabot.goroda.GorodaGame;
 
 import java.util.Collection;
 
 public class GorodaGameTurnHandler implements MessageHandler {
+
+    private Phrases phrases = Phrases.getInstance();
 
     @Override
     public boolean canHandle(String message, Session session) {
@@ -14,19 +17,29 @@ public class GorodaGameTurnHandler implements MessageHandler {
 
     @Override
     public void handle(String message, Session session, Collection<String> responses) {
-        if (!session.getGorodaGame().isValidCity(message)) {
-            responses.add(Phrases.getInstance().getPhrase("UNKNOWN CITY"));
-        } else if (!session.getGorodaGame().isCorrectTurn(message)) {
-            responses.add(Phrases.getInstance().getPhrase("WRONG ANSWER"));
-        } else if (session.getGorodaGame().isCityUsed(message)) {
-            responses.add(Phrases.getInstance().getPhrase("CITY ALREADY USED"));
-        } else {
+        if (checkTurn(message, session.getGorodaGame(), responses)) {
             var response = session.getGorodaGame().makeTurn(message);
             if (response == null) {
-                response = Phrases.getInstance().getPhrase("LOSE");
+                response = phrases.getPhrase("LOSE");
                 session.setGorodaGame(null);
             }
             responses.add(response);
         }
+    }
+
+    private boolean checkTurn(String message, GorodaGame game, Collection<String> responses) {
+        if (!game.isValidCity(message)) {
+            responses.add(phrases.getPhrase("UNKNOWN CITY"));
+            return false;
+        }
+        if (!game.isCorrectTurn(message)) {
+            responses.add(phrases.getPhrase("WRONG ANSWER"));
+            return false;
+        }
+        if (game.isCityUsed(message)) {
+            responses.add(phrases.getPhrase("CITY ALREADY USED"));
+            return false;
+        }
+        return true;
     }
 }

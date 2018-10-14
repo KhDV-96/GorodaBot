@@ -7,13 +7,15 @@ import java.util.Collection;
 
 public class HelpCommandHandler extends CommandHandler {
 
+    private Phrases phrases = Phrases.getInstance();
+
     public HelpCommandHandler() {
         addCommand("/help");
     }
 
     @Override
     public void handle(String message, Session session, Collection<String> responses) {
-        responses.add(Phrases.getInstance().getPhrase("ABOUT"));
-        responses.add(Phrases.getInstance().getPhrase("HELP"));
+        responses.add(phrases.getPhrase("ABOUT"));
+        responses.add(phrases.getPhrase("HELP"));
     }
 }

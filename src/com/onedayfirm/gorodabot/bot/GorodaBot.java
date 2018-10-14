@@ -43,14 +43,13 @@ public class GorodaBot implements Bot {
     }
 
     private Handler getHandler(String message, Session session) {
-        var handler = commandHandlers.get(message);
-        if (handler == null) {
-            for (var messageHandler : messageHandlers) {
-                if (messageHandler.canHandle(message, session))
-                    handler = messageHandler;
-            }
+        if (CommandHandler.isCommand(message))
+            return commandHandlers.get(message);
+        for (var messageHandler : messageHandlers) {
+            if (messageHandler.canHandle(message, session))
+                return messageHandler;
         }
-        return handler;
+        return null;
     }
 
     private void onUnhandledMessage(Collection<String> responses) {
