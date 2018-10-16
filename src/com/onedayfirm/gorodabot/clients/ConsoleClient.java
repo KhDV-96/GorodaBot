@@ -1,5 +1,7 @@
 package com.onedayfirm.gorodabot.clients;
 
+import com.onedayfirm.gorodabot.bot.Bot;
+
 import java.util.Scanner;
 
 public class ConsoleClient extends Client {
@@ -8,15 +10,16 @@ public class ConsoleClient extends Client {
 
     private Scanner scanner;
 
-    public ConsoleClient() {
+    public ConsoleClient(Bot bot) {
+        super(bot);
         scanner = new Scanner(System.in);
     }
 
     @Override
     public void run() {
-        getController().handleConnection(id);
+        handleConnection(id);
         while (!Thread.interrupted())
-            getController().handleMessage(id, scanner.nextLine());
+            handleMessage(id, scanner.nextLine());
     }
 
     @Override
