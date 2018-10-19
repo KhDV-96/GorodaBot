@@ -1,6 +1,7 @@
 package com.onedayfirm.gorodabot.clients;
 
 import com.onedayfirm.gorodabot.bot.Bot;
+import com.onedayfirm.gorodabot.bot.Session;
 
 import java.util.LinkedList;
 
@@ -16,10 +17,10 @@ public abstract class Client implements Runnable {
 
     abstract void send(int id, String message);
 
-    void handleConnection(int id) {
+    void handleConnection(Session session) {
         var responses = new LinkedList<String>();
-        bot.onConnection(id, responses);
-        responses.forEach(text -> send(id, text));
+        bot.onConnection(session, responses);
+        responses.forEach(text -> send(session.getId(), text));
     }
 
     void handleMessage(int id, String message) {

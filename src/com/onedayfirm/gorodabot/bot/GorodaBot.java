@@ -26,8 +26,12 @@ public class GorodaBot implements Bot {
         return sessions.containsKey(id);
     }
 
-    public void onConnection(int id, Collection<String> responses) {
-        sessions.put(id, new Session());
+    public Session getUserSession(int id) {
+        return sessions.get(id);
+    }
+
+    public void onConnection(Session session, Collection<String> responses) {
+        sessions.put(session.getId(), session);
         responses.add(phrases.getPhrase("GREETING"));
         responses.add(phrases.getPhrase("ABOUT"));
         responses.add(phrases.getPhrase("HELP"));
