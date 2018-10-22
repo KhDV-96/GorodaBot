@@ -13,7 +13,7 @@ public class FileCitiesStorage implements CitiesStorage {
 
     private static FileCitiesStorage instance = new FileCitiesStorage();
 
-    private HashMap<Character, List<String>> cities;
+    private HashMap<Character, List<City>> cities;
 
     private FileCitiesStorage() {
         cities = new HashMap<>();
@@ -25,7 +25,7 @@ public class FileCitiesStorage implements CitiesStorage {
     }
 
     @Override
-    public List<String> getCitiesByLetter(char letter) {
+    public List<City> getCitiesByLetter(char letter) {
         return cities.getOrDefault(letter, null);
     }
 
@@ -41,6 +41,6 @@ public class FileCitiesStorage implements CitiesStorage {
         if (!cities.containsKey(symbol)) {
             cities.put(symbol, new ArrayList<>());
         }
-        cities.get(symbol).add(city);
+        cities.get(symbol).add(new City(city));
     }
 }

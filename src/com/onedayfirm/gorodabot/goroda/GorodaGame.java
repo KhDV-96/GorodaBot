@@ -1,56 +1,73 @@
 package com.onedayfirm.gorodabot.goroda;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import static com.onedayfirm.gorodabot.utils.ArrayUtils.mix;
 
 public class GorodaGame {
 
-    private HashSet<String> usedCities;
+    private HashSet<City> usedCities;
     private CitiesStorage storage;
-    private String previousCity;
+    private City previousCity;
 
     public GorodaGame() {
         usedCities = new HashSet<>();
         storage = FileCitiesStorage.getInstance();
     }
 
-    public String makeTurn(String city) {
-        city = city.toLowerCase();
-        var lastLetter = getLastCharOfCity(city);
-        var citiesOnLastLetter = storage.getCitiesByLetter(lastLetter);
-        if (citiesOnLastLetter == null) {
-            return null;
-        }
-        addUsedCity(city);
-        for (var cityName : citiesOnLastLetter) {
-            if (!isCityUsed(cityName)) {
-                previousCity = cityName;
-                addUsedCity(cityName);
-                return changeFirstLetterToUppercase(cityName);
-            }
-        }
-        return null;
+    public String makeTurn(String message){
+        var city = new City(message);
+        return makeTurn(city);
     }
 
-    public boolean isValidCity(String city) {
-        city = city.toLowerCase();
-        var firstChar = city.charAt(0);
+    public String makeTurn(City city) {
+        var lastLetter = getLastCharOfCity(city);
+        var cities = storage.getCitiesByLetter(lastLetter);
+        if (cities == null)
+            return null;
+        var nextCity = getRandomCityByLetter(cities);
+        if (nextCity == null)
+            return null;
+        addUsedCity(city);
+        addUsedCity(nextCity);
+        previousCity = nextCity;
+        return changeFirstLetterToUppercase(nextCity);
+    }
+
+    public boolean isValidCity(String message){
+        var city = new City(message);
+        return isValidCity(city);
+    }
+
+    public boolean isValidCity(City city) {
+        var firstChar = city.getName().charAt(0);
         var citiesList = storage.getCitiesByLetter(firstChar);
-        if (citiesList == null) {
+        if (citiesList == null){
             return false;
         }
-        return storage.getCitiesByLetter(firstChar).contains(city);
+        return citiesList.contains(city);
     }
 
-    private boolean hasCorrectLetters(String city) {
-        var firstChar = Character.toLowerCase(city.charAt(0));
+    public boolean hasCorrectLetters(City city) {
         if (previousCity == null) {
             return true;
+        }
+        var firstChar = Character.toLowerCase(city.getName().charAt(0));
+        if (city.getAlternativeName() != null){
+            var alternativeFirstChar = Character.toLowerCase(city.getAlternativeName().charAt(0));
+            return getLastCharOfCity(previousCity) == firstChar ||
+                    getLastCharOfCity(previousCity) == alternativeFirstChar;
         }
         return getLastCharOfCity(previousCity) == firstChar;
     }
 
-    public boolean isCorrectTurn(String city) {
+    public boolean isCorrectTurn(String message){
+        var city = new City(message);
+        return isCorrectTurn(city);
+    }
+    public boolean isCorrectTurn(City city) {
         return isValidCity(city) && hasCorrectLetters(city);
     }
 
@@ -59,29 +76,43 @@ public class GorodaGame {
         var random = new Random();
         var characterNumber = random.nextInt(firstCharacters.length);
         var cities = storage.getCitiesByLetter((char) firstCharacters[characterNumber]);
-        var cityNumber = random.nextInt(cities.size());
-        previousCity = cities.get(cityNumber);
+        previousCity = getRandomCityByLetter(cities);
         addUsedCity(previousCity);
         return changeFirstLetterToUppercase(previousCity);
     }
 
-    public boolean isCityUsed(String city) {
-        return usedCities.contains(city.toLowerCase());
+    public boolean isCityUsed(String message){
+        var city = new City(message);
+        return isCityUsed(city);
     }
 
-    private void addUsedCity(String city) {
+    public boolean isCityUsed(City city) {
+        return usedCities.contains(city);
+    }
+
+    public void addUsedCity(City city) {
         usedCities.add(city);
     }
 
-    private char getLastCharOfCity(String city) {
-        var lastLetterIndex = city.length() - 1;
-        if (!storage.getAvailableLetters().contains(city.charAt(lastLetterIndex))) {
-            return city.charAt(lastLetterIndex - 1);
+    private char getLastCharOfCity(City city) {
+        var cityName = city.getName();
+        var lastLetterIndex = cityName.length() - 1;
+        if (!storage.getAvailableLetters().contains(cityName.charAt(lastLetterIndex))) {
+            return cityName.charAt(lastLetterIndex - 1);
         }
-        return city.charAt(lastLetterIndex);
+        return cityName.charAt(lastLetterIndex);
     }
 
-    private String changeFirstLetterToUppercase(String word) {
-        return Character.toUpperCase(word.charAt(0)) + word.substring(1);
+    private String changeFirstLetterToUppercase(City word) {
+        return Character.toUpperCase(word.getName().charAt(0)) + word.getName().substring(1);
+    }
+    private City getRandomCityByLetter(Collection<City> cities) {
+        var citiesArray = cities.toArray(new City[0]);
+        mix(citiesArray);
+        for (var city : citiesArray) {
+            if (!isCityUsed(city))
+                return city;
+        }
+        return null;
     }
 }
