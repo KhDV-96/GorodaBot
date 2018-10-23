@@ -1,20 +1,33 @@
 package com.onedayfirm.gorodabot.clients;
 
-import com.onedayfirm.gorodabot.controllers.Controller;
+import com.onedayfirm.gorodabot.bot.Bot;
+import com.onedayfirm.gorodabot.bot.Session;
+
+import java.util.LinkedList;
 
 public abstract class Client implements Runnable {
 
-    private Controller controller;
+    private Bot bot;
 
-    Controller getController() {
-        return controller;
+    Client(Bot bot) {
+        this.bot = bot;
     }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
-    public abstract void send(int id, String message);
 
     public abstract void run();
+
+    abstract void send(int id, String message);
+
+    void handleConnection(Session session) {
+        var responses = new LinkedList<String>();
+        bot.onConnection(session, responses);
+        responses.forEach(text -> send(session.getId(), text));
+    }
+
+    void handleMessage(int id, String message) {
+        if (message.isEmpty())
+            return;
+        var responses = new LinkedList<String>();
+        bot.onMessage(id, message, responses);
+        responses.forEach(text -> send(id, text));
+    }
 }

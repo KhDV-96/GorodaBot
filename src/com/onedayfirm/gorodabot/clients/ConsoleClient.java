@@ -1,22 +1,26 @@
 package com.onedayfirm.gorodabot.clients;
 
+import com.onedayfirm.gorodabot.bot.Bot;
+import com.onedayfirm.gorodabot.bot.Session;
+
 import java.util.Scanner;
 
 public class ConsoleClient extends Client {
 
-    private final int id = hashCode();
+    private final int static_id = hashCode();
 
     private Scanner scanner;
 
-    public ConsoleClient() {
+    public ConsoleClient(Bot bot) {
+        super(bot);
         scanner = new Scanner(System.in);
     }
 
     @Override
     public void run() {
-        getController().handleConnection(id);
+        handleConnection(new Session(static_id));
         while (!Thread.interrupted())
-            getController().handleMessage(id, scanner.nextLine());
+            handleMessage(static_id, scanner.nextLine());
     }
 
     @Override

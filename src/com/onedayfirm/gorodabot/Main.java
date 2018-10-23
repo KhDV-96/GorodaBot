@@ -2,7 +2,6 @@ package com.onedayfirm.gorodabot;
 
 import com.onedayfirm.gorodabot.bot.GorodaBot;
 import com.onedayfirm.gorodabot.clients.ConsoleClient;
-import com.onedayfirm.gorodabot.controllers.SimpleController;
 import com.onedayfirm.gorodabot.handlers.GorodaGameTurnHandler;
 import com.onedayfirm.gorodabot.handlers.HelpCommandHandler;
 import com.onedayfirm.gorodabot.handlers.MessageHandler;
@@ -16,8 +15,7 @@ public class Main {
         var commandHandlers = List.of(new HelpCommandHandler(), new StartGorodaGameCommandHandler());
         var messageHandlers = List.of((MessageHandler) new GorodaGameTurnHandler());
         var bot = new GorodaBot(commandHandlers, messageHandlers);
-        var client = new ConsoleClient();
-        new SimpleController(bot, client);
+        var client = new ConsoleClient(bot);
         client.run();
     }
 }

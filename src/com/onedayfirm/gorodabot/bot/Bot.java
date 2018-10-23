@@ -6,7 +6,9 @@ public interface Bot {
 
     boolean isUserConnected(int id);
 
-    void onConnection(int id, Collection<String> responses);
+    Session getUserSession(int id);
+
+    void onConnection(Session session, Collection<String> responses);
 
     void onMessage(int id, String message, Collection<String> responses);
 }
