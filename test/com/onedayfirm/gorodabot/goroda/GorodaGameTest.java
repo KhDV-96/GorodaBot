@@ -133,13 +133,9 @@ class GorodaGameTest {
     @Test
     void isCorrectTurnFalse() {
         var game1 = new GorodaGame();
-        var game2 = new GorodaGame();
-
         var city1 = new City(game1.makeFirstTurn());
-        var city2 = new City(game2.makeTurn(city1));
-        game1.makeTurn(city2);
 
-        assertFalse(game1.isCorrectTurn(city2));
+        assertFalse(game1.isCorrectTurn(new City("city")));
     }
 
     @Test
