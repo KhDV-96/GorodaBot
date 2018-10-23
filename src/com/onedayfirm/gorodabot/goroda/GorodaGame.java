@@ -2,8 +2,8 @@ package com.onedayfirm.gorodabot.goroda;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
+
 import static com.onedayfirm.gorodabot.utils.ArrayUtils.mix;
 
 public class GorodaGame {
@@ -68,7 +68,7 @@ public class GorodaGame {
         return isCorrectTurn(city);
     }
     public boolean isCorrectTurn(City city) {
-        return isValidCity(city) && hasCorrectLetters(city);
+        return hasCorrectLetters(city);
     }
 
     public String makeFirstTurn() {
