@@ -1,8 +1,9 @@
-package com.onedayfirm.gorodabot.bot;
+package com.onedayfirm.gorodabot.containers;
 
 import com.onedayfirm.gorodabot.io.FileReader;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Phrases {
 
@@ -11,7 +12,7 @@ public class Phrases {
 
     private static Phrases instance = new Phrases();
 
-    private HashMap<String, String> phrases;
+    private Map<String, String> phrases;
 
     private Phrases() {
         phrases = new HashMap<>();
@@ -26,8 +27,8 @@ public class Phrases {
         return phrases.get(key);
     }
 
-    private void addPhrase(String phrase) {
-        var blocks = phrase.split(SEPARATOR);
+    private void addPhrase(String line) {
+        var blocks = line.split(SEPARATOR);
         phrases.put(blocks[0], blocks[1]);
     }
 }

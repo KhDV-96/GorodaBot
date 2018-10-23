@@ -1,5 +1,6 @@
 package com.onedayfirm.gorodabot.bot;
 
+import com.onedayfirm.gorodabot.containers.Phrases;
 import com.onedayfirm.gorodabot.handlers.CommandHandler;
 import com.onedayfirm.gorodabot.handlers.Handler;
 import com.onedayfirm.gorodabot.handlers.MessageHandler;

@@ -1,7 +1,7 @@
 package com.onedayfirm.gorodabot.handlers;
 
-import com.onedayfirm.gorodabot.bot.Phrases;
 import com.onedayfirm.gorodabot.bot.Session;
+import com.onedayfirm.gorodabot.containers.Phrases;
 import com.onedayfirm.gorodabot.goroda.GorodaGame;
 
 import java.util.Collection;
