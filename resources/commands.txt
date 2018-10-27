@@ -1,0 +1,2 @@
+HELP ~ /help, /помощь
+GAME ~ /game, /игра
