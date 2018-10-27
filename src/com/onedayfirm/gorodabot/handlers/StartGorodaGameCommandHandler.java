@@ -9,7 +9,7 @@ import java.util.Collection;
 public class StartGorodaGameCommandHandler extends CommandHandler {
 
     public StartGorodaGameCommandHandler() {
-        Commands.getInstance().getCommands("GAME").forEach(this::addCommand);
+        Commands.getInstance().get("GAME").forEach(this::addCommand);
     }
 
     @Override

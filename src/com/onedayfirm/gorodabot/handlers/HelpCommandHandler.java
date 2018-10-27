@@ -11,12 +11,12 @@ public class HelpCommandHandler extends CommandHandler {
     private Phrases phrases = Phrases.getInstance();
 
     public HelpCommandHandler() {
-        Commands.getInstance().getCommands("HELP").forEach(this::addCommand);
+        Commands.getInstance().get("HELP").forEach(this::addCommand);
     }
 
     @Override
     public void handle(String message, Session session, Collection<String> responses) {
-        responses.add(phrases.getPhrase("ABOUT"));
-        responses.add(phrases.getPhrase("HELP"));
+        responses.add(phrases.get("ABOUT"));
+        responses.add(phrases.get("HELP"));
     }
 }

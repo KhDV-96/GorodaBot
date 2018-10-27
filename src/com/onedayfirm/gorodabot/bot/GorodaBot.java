@@ -29,9 +29,9 @@ public class GorodaBot implements Bot {
 
     public void onConnection(int id, Collection<String> responses) {
         sessions.put(id, new Session());
-        responses.add(phrases.getPhrase("GREETING"));
-        responses.add(phrases.getPhrase("ABOUT"));
-        responses.add(phrases.getPhrase("HELP"));
+        responses.add(phrases.get("GREETING"));
+        responses.add(phrases.get("ABOUT"));
+        responses.add(phrases.get("HELP"));
     }
 
     public void onMessage(int id, String message, Collection<String> responses) {
@@ -54,8 +54,8 @@ public class GorodaBot implements Bot {
     }
 
     private void onUnhandledMessage(Collection<String> responses) {
-        responses.add(phrases.getPhrase("UNKNOWN COMMAND"));
-        responses.add(phrases.getPhrase("HELP"));
+        responses.add(phrases.get("UNKNOWN COMMAND"));
+        responses.add(phrases.get("HELP"));
     }
 
     private void saveCommandHandlers(Collection<CommandHandler> handlers) {
