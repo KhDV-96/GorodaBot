@@ -1,4 +1,4 @@
-package com.onedayfirm.gorodabot.io;
+package com.onedayfirm.gorodabot.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;

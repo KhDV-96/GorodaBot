@@ -17,12 +17,12 @@ public class GorodaGame {
         storage = FileCitiesStorage.getInstance();
     }
 
-    public String makeTurn(String message){
+    public String makeTurn(String message) {
         var city = new City(message);
         return makeTurn(city);
     }
 
-    public String makeTurn(City city) {
+    String makeTurn(City city) {
         var lastLetter = getLastCharOfCity(city);
         var cities = storage.getCitiesByLetter(lastLetter);
         if (cities == null)
@@ -36,26 +36,26 @@ public class GorodaGame {
         return changeFirstLetterToUppercase(nextCity);
     }
 
-    public boolean isValidCity(String message){
+    public boolean isValidCity(String message) {
         var city = new City(message);
         return isValidCity(city);
     }
 
-    public boolean isValidCity(City city) {
+    boolean isValidCity(City city) {
         var firstChar = city.getName().charAt(0);
         var citiesList = storage.getCitiesByLetter(firstChar);
-        if (citiesList == null){
+        if (citiesList == null) {
             return false;
         }
         return citiesList.contains(city);
     }
 
-    public boolean hasCorrectLetters(City city) {
+    private boolean hasCorrectLetters(City city) {
         if (previousCity == null) {
             return true;
         }
         var firstChar = Character.toLowerCase(city.getName().charAt(0));
-        if (city.getAlternativeName() != null){
+        if (city.getAlternativeName() != null) {
             var alternativeFirstChar = Character.toLowerCase(city.getAlternativeName().charAt(0));
             return getLastCharOfCity(previousCity) == firstChar ||
                     getLastCharOfCity(previousCity) == alternativeFirstChar;
@@ -63,11 +63,12 @@ public class GorodaGame {
         return getLastCharOfCity(previousCity) == firstChar;
     }
 
-    public boolean isCorrectTurn(String message){
+    public boolean isCorrectTurn(String message) {
         var city = new City(message);
         return isCorrectTurn(city);
     }
-    public boolean isCorrectTurn(City city) {
+
+    boolean isCorrectTurn(City city) {
         return hasCorrectLetters(city);
     }
 
@@ -81,16 +82,16 @@ public class GorodaGame {
         return changeFirstLetterToUppercase(previousCity);
     }
 
-    public boolean isCityUsed(String message){
+    public boolean isCityUsed(String message) {
         var city = new City(message);
         return isCityUsed(city);
     }
 
-    public boolean isCityUsed(City city) {
+    boolean isCityUsed(City city) {
         return usedCities.contains(city);
     }
 
-    public void addUsedCity(City city) {
+    private void addUsedCity(City city) {
         usedCities.add(city);
     }
 
@@ -106,6 +107,7 @@ public class GorodaGame {
     private String changeFirstLetterToUppercase(City word) {
         return Character.toUpperCase(word.getName().charAt(0)) + word.getName().substring(1);
     }
+
     private City getRandomCityByLetter(Collection<City> cities) {
         var citiesArray = cities.toArray(new City[0]);
         mix(citiesArray);
@@ -114,5 +116,9 @@ public class GorodaGame {
                 return city;
         }
         return null;
+    }
+
+    public String getPreviousCity() {
+        return previousCity.getName();
     }
 }

@@ -1,6 +1,6 @@
 package com.onedayfirm.gorodabot.goroda;
 
-import com.onedayfirm.gorodabot.io.FileReader;
+import com.onedayfirm.gorodabot.utils.FileReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
