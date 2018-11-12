@@ -11,13 +11,13 @@ import java.util.regex.Pattern;
 public class MediaWiki {
 
     private static final String API_URL = "https://ru.wikipedia.org/w/api.php";
-    private static final String SEARCH_TEMPLATE_1 = "%s";
+    private static final String SEARCH_TEMPLATE_1 = "%1$s %2$s|%2$s";
     private static final String SEARCH_TEMPLATE_2 = "%s|%s";
     private static final Pattern SHORT_INFO_PATTERN = Pattern.compile("<p>(.+?)\\s</p>\\n\\n", Pattern.DOTALL);
     private static final Pattern PLANE_TEXT_PATTERN = Pattern.compile("<[^>]*>(\\s*<[^>]*>)*", Pattern.DOTALL);
 
     public String search(String query, String keyWord) {
-        var searchQuery1 = String.format(SEARCH_TEMPLATE_1, query);
+        var searchQuery1 = String.format(SEARCH_TEMPLATE_1, query, keyWord);
         var searchQuery2 = String.format(SEARCH_TEMPLATE_2, query, keyWord);
         try (var request = new Request(API_URL)) {
             var first = request.get(getSearchParameters(searchQuery1));
