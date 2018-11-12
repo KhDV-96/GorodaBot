@@ -4,6 +4,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class JsonParser {
@@ -23,18 +25,35 @@ public class JsonParser {
         return this;
     }
 
-    public JsonParser chooseFirst(String property, Function<Object, Boolean> selector) {
-        for (var obj : (JSONArray) currentObject) {
-            var entry = (JSONObject) obj;
-            if (selector.apply(entry.get(property))) {
-                currentObject = entry;
-                break;
-            }
+    public JsonParser forEach(Consumer<Map> consumer) throws ParseException {
+        try {
+            for (var obj : (JSONArray) currentObject)
+                consumer.accept((JSONObject) obj);
+        } catch (ClassCastException exception) {
+            throw new ParseException("JSONObject cannot be cast to JSONArray");
         }
         return this;
     }
 
-    public Object getValue(String key) {
-        return ((JSONObject) currentObject).get(key);
+    public JsonParser choose(Function<Map, Boolean> selector) throws ParseException {
+        try {
+            for (var obj : (JSONArray) currentObject) {
+                if (selector.apply((JSONObject) obj)) {
+                    currentObject = obj;
+                    break;
+                }
+            }
+        } catch (ClassCastException exception) {
+            throw new ParseException("JSONObject cannot be cast to JSONArray");
+        }
+        return this;
+    }
+
+    public Object getValue(String key) throws ParseException {
+        try {
+            return ((JSONObject) currentObject).get(key);
+        } catch (ClassCastException exception) {
+            throw new ParseException("JSONArray cannot be cast to JSONObject");
+        }
     }
 }

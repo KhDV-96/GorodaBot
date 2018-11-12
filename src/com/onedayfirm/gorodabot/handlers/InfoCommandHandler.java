@@ -25,16 +25,9 @@ public class InfoCommandHandler extends CommandHandler {
             responses.add(Phrases.getInstance().get("NO PREVIOUS CITY"));
             return;
         }
-        var response = findInformation(game.getPreviousCity());
+        var response = wiki.search(game.getPreviousCity(), KEY_WORD);
         if (response == null)
             response = Phrases.getInstance().get("NO INFO");
         responses.add(response);
-    }
-
-    private String findInformation(String city) {
-        var pageId = wiki.search(city, KEY_WORD);
-        if (pageId == null)
-            return null;
-        return wiki.getContent(pageId);
     }
 }
