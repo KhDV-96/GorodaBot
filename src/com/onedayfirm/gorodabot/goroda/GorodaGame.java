@@ -12,9 +12,9 @@ public class GorodaGame {
     private CitiesStorage storage;
     private City previousCity;
 
-    public GorodaGame() {
+    public GorodaGame(CitiesStorage storage) {
         usedCities = new HashSet<>();
-        storage = FileCitiesStorage.getInstance();
+        this.storage = storage;
     }
 
     public String makeTurn(String message) {

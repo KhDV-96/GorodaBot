@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GorodaGameTest {
-
+    private CitiesStorage storage = FileCitiesStorage.getInstance();
     @Test
     void makeTurnValid() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var firstCity = new City(game.makeFirstTurn());
         var secondCity = new City(game.makeTurn(firstCity));
 
@@ -18,7 +18,7 @@ class GorodaGameTest {
 
     @Test
     void makeTurnInvalid() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = game.makeTurn(new City("foobar"));
 
         assertNull(city);
@@ -46,7 +46,7 @@ class GorodaGameTest {
 
     @Test
     void isValidCityFalse() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = new City(game.makeFirstTurn());
 
         assertTrue(game.isValidCity(city));
@@ -55,14 +55,14 @@ class GorodaGameTest {
 
     @Test
     void isValidCityFalse2() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
 
         assertFalse(game.isValidCity(new City("foobar")));
     }
 
     @Test
     void makeFirstTurn() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = new City(game.makeFirstTurn());
 
         assertNotNull(city);
@@ -71,7 +71,7 @@ class GorodaGameTest {
 
     @Test
     void isCityUsedTrue() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var message = new City(game.makeFirstTurn());
 
         assertTrue(game.isCityUsed(message));
@@ -79,14 +79,14 @@ class GorodaGameTest {
 
     @Test
     void isCityUsedFalse() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
 
         assertFalse(game.isCityUsed(new City("foobar")));
     }
 
     @Test
     void isValidCityUpperCase() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = new City(game.makeFirstTurn());
 
         assertTrue(game.isValidCity(city));
@@ -94,7 +94,7 @@ class GorodaGameTest {
 
     @Test
     void isValidCityLowerCase() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = new StringBuilder(game.makeFirstTurn());
         city.setCharAt(0, Character.toLowerCase(city.charAt(0)));
 
@@ -103,7 +103,7 @@ class GorodaGameTest {
 
     @Test
     void isValidCityWrongCityENG() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = new City("foobar");
 
         assertFalse(game.isValidCity(city));
@@ -111,7 +111,7 @@ class GorodaGameTest {
 
     @Test
     void isValidCityWrongCityRUS() {
-        var game = new GorodaGame();
+        var game = new GorodaGame(storage);
         var city = new City("Фуубар");
 
         assertFalse(game.isValidCity(city));
@@ -119,8 +119,8 @@ class GorodaGameTest {
 
     @Test
     void isCorrectTurnTrue() {
-        var game1 = new GorodaGame();
-        var game2 = new GorodaGame();
+        var game1 = new GorodaGame(storage);
+        var game2 = new GorodaGame(storage);
 
         var city1 = new City(game1.makeFirstTurn());
         var city2 = new City(game2.makeTurn(city1));
@@ -132,16 +132,15 @@ class GorodaGameTest {
 
     @Test
     void isCorrectTurnFalse() {
-        var game1 = new GorodaGame();
-        var city1 = new City(game1.makeFirstTurn());
+        var game1 = new GorodaGame(storage);
 
         assertFalse(game1.isCorrectTurn(new City("city")));
     }
 
     @Test
     void addUsedCity() {
-        var game1 = new GorodaGame();
-        var game2 = new GorodaGame();
+        var game1 = new GorodaGame(storage);
+        var game2 = new GorodaGame(storage);
         var city = new City(game1.makeFirstTurn());
         game2.makeTurn(city);
 

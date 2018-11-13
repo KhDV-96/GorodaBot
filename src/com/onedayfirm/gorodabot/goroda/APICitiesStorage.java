@@ -10,7 +10,7 @@ public class APICitiesStorage implements CitiesStorage {
 
     private static APICitiesStorage instance = new APICitiesStorage();
 
-    static APICitiesStorage getInstance() {
+    public static APICitiesStorage getInstance() {
         return instance;
     }
 
