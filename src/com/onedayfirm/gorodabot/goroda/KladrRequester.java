@@ -20,8 +20,6 @@ public class KladrRequester {
         try (var request = new Request(url, USER_AGENT)) {
             return request.get("");
         } catch (NullPointerException | RequestException exception) {
-            System.err.println(exception.getMessage());
-            exception.printStackTrace();
             return null;
         }
     }
@@ -39,18 +37,8 @@ public class KladrRequester {
                         }
                     });
         } catch (ParseException e) {
-            e.printStackTrace();
+            return names;
         }
         return names;
-    }
-
-    public static void main(String[] args) {
-        var requester = new KladrRequester();
-        try {
-            var request = requester.makeGetRequest('ф');
-            var names = requester.getNames(request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
