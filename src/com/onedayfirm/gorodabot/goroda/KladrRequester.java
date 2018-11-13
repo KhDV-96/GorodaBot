@@ -8,24 +8,23 @@ import com.onedayfirm.gorodabot.network.RequestException;
 import java.util.ArrayList;
 import java.util.List;
 
+class KladrRequester {
 
-public class KladrRequester {
-
-    private final String USER_AGENT = "Mozilla/5.0";
+    private static final String API_URL_TEMPLATE =
+            "http://kladr-api.ru/api.php?query=%s&contentType=city&withParent=0&typeCode=1";
+    private static final String USER_AGENT = "Mozilla/5.0";
 
     String makeGetRequest(char letter) {
-
-        var url = "http://kladr-api.ru/api.php?query=" + letter + "&contentType=city&withParent=0&typeCode=1";
-
+        var url = String.format(API_URL_TEMPLATE, letter);
         try (var request = new Request(url, USER_AGENT)) {
-            return request.get("");
-        } catch (NullPointerException | RequestException exception) {
+            return request.get();
+        } catch (RequestException exception) {
             return null;
         }
     }
 
     List<City> getNames(String json) {
-        var names = new ArrayList();
+        var names = new ArrayList<City>();
         try {
             new JsonParser(json)
                     .comeDown("result")
@@ -36,9 +35,9 @@ public class KladrRequester {
                             names.add(new City(name));
                         }
                     });
-        } catch (ParseException e) {
             return names;
+        } catch (ParseException e) {
+            return new ArrayList<>();
         }
-        return names;
     }
 }

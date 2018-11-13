@@ -1,17 +1,18 @@
 package com.onedayfirm.gorodabot.goroda;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import java.util.*;
+public class KladrCitiesStorage implements CitiesStorage {
 
-import static java.util.Arrays.asList;
+    private static final char[] AVAILABLE_LETTERS = "абвгдеёжзийклмнопрстуфхцчшщэюя".toCharArray();
 
-public class APICitiesStorage implements CitiesStorage {
+    private static KladrCitiesStorage instance = new KladrCitiesStorage();
 
     private KladrRequester requester = new KladrRequester();
 
-    private static APICitiesStorage instance = new APICitiesStorage();
-
-    public static APICitiesStorage getInstance() {
+    public static KladrCitiesStorage getInstance() {
         return instance;
     }
 
@@ -29,8 +30,7 @@ public class APICitiesStorage implements CitiesStorage {
     @Override
     public Set<Character> getAvailableLetters() {
         var set = new HashSet<Character>();
-        var array = "йцукенгшщзхфвапролджэёячсмитбю".toCharArray();
-        for (var letter : array) {
+        for (var letter : AVAILABLE_LETTERS) {
             set.add(letter);
         }
         return set;

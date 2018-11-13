@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GorodaGameTest {
+
     private CitiesStorage storage = FileCitiesStorage.getInstance();
+
     @Test
     void makeTurnValid() {
         var game = new GorodaGame(storage);
@@ -133,6 +135,7 @@ class GorodaGameTest {
     @Test
     void isCorrectTurnFalse() {
         var game1 = new GorodaGame(storage);
+        game1.makeFirstTurn();
 
         assertFalse(game1.isCorrectTurn(new City("city")));
     }
