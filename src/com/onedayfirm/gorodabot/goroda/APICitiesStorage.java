@@ -1,8 +1,9 @@
 package com.onedayfirm.gorodabot.goroda;
 
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.Arrays.asList;
 
 public class APICitiesStorage implements CitiesStorage {
 
@@ -27,6 +28,11 @@ public class APICitiesStorage implements CitiesStorage {
 
     @Override
     public Set<Character> getAvailableLetters() {
-        return FileCitiesStorage.getInstance().getAvailableLetters();
+        var set = new HashSet<Character>();
+        var array = "йцукенгшщзхфвапролджэёячсмитбю".toCharArray();
+        for (var letter : array) {
+            set.add(letter);
+        }
+        return set;
     }
 }
