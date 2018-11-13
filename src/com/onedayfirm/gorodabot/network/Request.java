@@ -34,6 +34,11 @@ public class Request implements Closeable {
         return read();
     }
 
+    public String get() throws RequestException {
+        openConnection();
+        return read();
+    }
+
     public void close() {
         connection.disconnect();
     }

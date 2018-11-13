@@ -6,7 +6,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class JsonParser {
 
@@ -35,10 +35,10 @@ public class JsonParser {
         return this;
     }
 
-    public JsonParser choose(Function<Map, Boolean> selector) throws ParseException {
+    public JsonParser choose(Predicate<Map> selector) throws ParseException {
         try {
             for (var obj : (JSONArray) currentObject) {
-                if (selector.apply((JSONObject) obj)) {
+                if (selector.test((JSONObject) obj)) {
                     currentObject = obj;
                     break;
                 }

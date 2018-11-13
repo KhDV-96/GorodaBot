@@ -13,7 +13,7 @@ public class MediaWiki {
     private static final String API_URL = "https://ru.wikipedia.org/w/api.php";
     private static final String SEARCH_TEMPLATE_1 = "%1$s %2$s|%2$s";
     private static final String SEARCH_TEMPLATE_2 = "%s|%s";
-    private static final Pattern SHORT_INFO_PATTERN = Pattern.compile("<p>(.+?)\\s</p>\\n\\n", Pattern.DOTALL);
+    private static final Pattern SHORT_INFO_PATTERN = Pattern.compile("<p>(.+?)\\s?</p>\\n\\n", Pattern.DOTALL);
     private static final Pattern PLANE_TEXT_PATTERN = Pattern.compile("<[^>]*>(\\s*<[^>]*>)*", Pattern.DOTALL);
 
     public String search(String query, String keyWord) {
@@ -22,7 +22,7 @@ public class MediaWiki {
         try (var request = new Request(API_URL)) {
             var first = request.get(getSearchParameters(searchQuery1));
             var second = request.get(getSearchParameters(searchQuery2));
-            var pageId = chooseRelevantPage(first, second, query);
+            var pageId = chooseRelevantPage(first, second, query.toLowerCase());
 
             var json = request.get(getContentQueryParameters(pageId.toString()));
             return extractContent(json, pageId);
