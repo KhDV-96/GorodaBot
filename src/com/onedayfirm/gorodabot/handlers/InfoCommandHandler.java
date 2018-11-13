@@ -11,10 +11,7 @@ public class InfoCommandHandler extends CommandHandler {
 
     private static final String KEY_WORD = "город";
 
-    private MediaWiki wiki;
-
     public InfoCommandHandler() {
-        wiki = new MediaWiki();
         Commands.getInstance().get("INFO").forEach(this::addCommand);
     }
 
@@ -25,7 +22,7 @@ public class InfoCommandHandler extends CommandHandler {
             responses.add(Phrases.getInstance().get("NO PREVIOUS CITY"));
             return;
         }
-        var response = wiki.search(game.getPreviousCity(), KEY_WORD);
+        var response = MediaWiki.search(game.getPreviousCity(), KEY_WORD);
         if (response == null)
             response = Phrases.getInstance().get("NO INFO");
         responses.add(response);
