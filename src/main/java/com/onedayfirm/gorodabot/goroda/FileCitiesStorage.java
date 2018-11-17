@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class FileCitiesStorage implements CitiesStorage {
 
-    private static final String PATH = "resources/cities.txt";
+    private static final String PATH = "cities.txt";
 
     private static FileCitiesStorage instance = new FileCitiesStorage();
 
@@ -20,7 +20,7 @@ public class FileCitiesStorage implements CitiesStorage {
         FileReader.readLines(PATH).forEach(this::addCity);
     }
 
-    static FileCitiesStorage getInstance() {
+    public static FileCitiesStorage getInstance() {
         return instance;
     }
 

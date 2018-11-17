@@ -10,8 +10,8 @@ public class FileReader {
     public static List<String> readLines(String path) {
         try {
             return Files.readAllLines(Paths.get(path));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
             System.exit(1);
         }
         return null;

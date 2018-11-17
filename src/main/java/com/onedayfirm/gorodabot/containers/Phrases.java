@@ -2,7 +2,7 @@ package com.onedayfirm.gorodabot.containers;
 
 public class Phrases extends Container<String> {
 
-    private static final String PATH = "resources/phrases.txt";
+    private static final String PATH = "phrases.txt";
 
     private static Phrases instance = new Phrases();
 

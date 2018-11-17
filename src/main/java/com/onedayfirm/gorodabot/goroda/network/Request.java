@@ -1,4 +1,4 @@
-package com.onedayfirm.gorodabot.network;
+package com.onedayfirm.gorodabot.goroda.network;
 
 import java.io.*;
 import java.net.HttpURLConnection;
