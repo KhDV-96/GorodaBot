@@ -1,9 +1,9 @@
 package com.onedayfirm.gorodabot.mediawiki;
 
-import com.onedayfirm.gorodabot.goroda.network.Request;
-import com.onedayfirm.gorodabot.goroda.network.RequestException;
 import com.onedayfirm.gorodabot.json.JsonParser;
 import com.onedayfirm.gorodabot.json.ParseException;
+import com.onedayfirm.gorodabot.network.Request;
+import com.onedayfirm.gorodabot.network.RequestException;
 
 import java.util.Map;
 import java.util.regex.Pattern;

@@ -1,9 +1,9 @@
 package com.onedayfirm.gorodabot.goroda;
 
-import com.onedayfirm.gorodabot.goroda.network.Request;
-import com.onedayfirm.gorodabot.goroda.network.RequestException;
 import com.onedayfirm.gorodabot.json.JsonParser;
 import com.onedayfirm.gorodabot.json.ParseException;
+import com.onedayfirm.gorodabot.network.Request;
+import com.onedayfirm.gorodabot.network.RequestException;
 
 import java.util.ArrayList;
 import java.util.List;
