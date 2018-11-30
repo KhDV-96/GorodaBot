@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public class Commands extends Container<Collection<String>> {
 
-    private static final String PATH = "resources/commands.txt";
+    private static final String PATH = "commands.txt";
     private static final String SEPARATOR = "\\s*,\\s*";
 
     private static Commands instance = new Commands();

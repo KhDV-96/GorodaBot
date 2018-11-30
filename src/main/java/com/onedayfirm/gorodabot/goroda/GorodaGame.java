@@ -22,7 +22,7 @@ public class GorodaGame {
         return makeTurn(city);
     }
 
-    String makeTurn(City city) {
+    private String makeTurn(City city) {
         var lastLetter = getLastCharOfCity(city);
         var cities = storage.getCitiesByLetter(lastLetter);
         if (cities == null)
@@ -41,7 +41,7 @@ public class GorodaGame {
         return isValidCity(city);
     }
 
-    boolean isValidCity(City city) {
+    private boolean isValidCity(City city) {
         var firstChar = city.getName().charAt(0);
         var citiesList = storage.getCitiesByLetter(firstChar);
         if (citiesList == null) {
@@ -68,7 +68,7 @@ public class GorodaGame {
         return isCorrectTurn(city);
     }
 
-    boolean isCorrectTurn(City city) {
+    private boolean isCorrectTurn(City city) {
         return hasCorrectLetters(city);
     }
 
@@ -87,7 +87,7 @@ public class GorodaGame {
         return isCityUsed(city);
     }
 
-    boolean isCityUsed(City city) {
+    private boolean isCityUsed(City city) {
         return usedCities.contains(city);
     }
 
