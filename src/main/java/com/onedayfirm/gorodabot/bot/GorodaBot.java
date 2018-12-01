@@ -11,15 +11,15 @@ import java.util.Map;
 
 public class GorodaBot implements Bot {
 
-    private HashMap<Integer, Session> sessions;
     private Phrases phrases = Phrases.getInstance();
+    private Map<Integer, Session> sessions;
     private Map<String, Handler> commandHandlers;
     private Collection<MessageHandler> messageHandlers;
 
     public GorodaBot(Collection<CommandHandler> commandHandlers, Collection<MessageHandler> messageHandlers) {
-        this.commandHandlers = new HashMap<>();
-        this.messageHandlers = messageHandlers;
         sessions = new HashMap<>();
+        this.messageHandlers = messageHandlers;
+        this.commandHandlers = new HashMap<>();
         saveCommandHandlers(commandHandlers);
     }
 
