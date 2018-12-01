@@ -20,19 +20,22 @@ public class JsonParser {
         }
     }
 
-    public JsonParser comeDown(String property) {
-        currentObject = ((JSONObject) currentObject).get(property);
+    public JsonParser comeDown(String property) throws ParseException {
+        var object = ((JSONObject) currentObject).get(property);
+        if (object == null)
+            throw new ParseException("The key '" + property + "' isn't in the json");
+        else
+            currentObject = object;
         return this;
     }
 
-    public JsonParser forEach(Consumer<Map> consumer) throws ParseException {
+    public void forEach(Consumer<Map> consumer) throws ParseException {
         try {
             for (var obj : (JSONArray) currentObject)
                 consumer.accept((JSONObject) obj);
         } catch (ClassCastException exception) {
             throw new ParseException("JSONObject cannot be cast to JSONArray");
         }
-        return this;
     }
 
     public JsonParser choose(Predicate<Map> selector) throws ParseException {

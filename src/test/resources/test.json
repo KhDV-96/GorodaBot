@@ -1,0 +1,14 @@
+{
+  "string": "value",
+  "object": {
+    "number": 0
+  },
+  "array": [
+    {
+      "key": "value1"
+    },
+    {
+      "key": "value2"
+    }
+  ]
+}
