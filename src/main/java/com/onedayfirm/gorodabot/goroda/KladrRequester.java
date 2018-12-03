@@ -15,7 +15,7 @@ class KladrRequester {
     private static final String USER_AGENT = "Mozilla/5.0";
 
     String makeGetRequest(char letter) {
-        var url = String.format(API_URL_TEMPLATE, letter);
+        var url = String.format(API_URL_TEMPLATE, Character.toString(letter));
         try (var request = new Request(url, USER_AGENT)) {
             return request.get();
         } catch (RequestException exception) {
