@@ -1,5 +1,7 @@
 package com.onedayfirm.gorodabot.network;
 
+import com.onedayfirm.gorodabot.utils.Configurations;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -9,7 +11,7 @@ import java.util.Map;
 
 public class Request implements Closeable {
 
-    private static final int TIMEOUT = 5000;
+    private static final int TIMEOUT = Integer.valueOf(Configurations.getProperty("request.timeout"));
 
     private String url;
     private String userAgent;

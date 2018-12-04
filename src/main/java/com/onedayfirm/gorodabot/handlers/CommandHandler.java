@@ -1,11 +1,13 @@
 package com.onedayfirm.gorodabot.handlers;
 
+import com.onedayfirm.gorodabot.utils.Configurations;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
 public abstract class CommandHandler implements Handler {
 
-    private static final String COMMAND_PREFIX = "/";
+    private static final String COMMAND_PREFIX = Configurations.getProperty("commandHandler.prefix");
 
     private Collection<String> commands;
 

@@ -1,12 +1,14 @@
 package com.onedayfirm.gorodabot.containers;
 
+import com.onedayfirm.gorodabot.utils.Configurations;
+
 import java.util.Arrays;
 import java.util.Collection;
 
 public class Commands extends Container<Collection<String>> {
 
-    private static final String PATH = "commands.txt";
-    private static final String SEPARATOR = "\\s*,\\s*";
+    private static final String PATH = Configurations.getProperty("commands.file");
+    private static final String SEPARATOR = Configurations.getProperty("commands.separator");
 
     private static Commands instance = new Commands();
 

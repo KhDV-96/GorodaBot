@@ -4,15 +4,15 @@ import com.onedayfirm.gorodabot.json.JsonParser;
 import com.onedayfirm.gorodabot.json.ParseException;
 import com.onedayfirm.gorodabot.network.Request;
 import com.onedayfirm.gorodabot.network.RequestException;
+import com.onedayfirm.gorodabot.utils.Configurations;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class KladrRequester {
 
-    private static final String API_URL_TEMPLATE =
-            "http://kladr-api.ru/api.php?query=%s&contentType=city&withParent=0&typeCode=1";
-    private static final String USER_AGENT = "Mozilla/5.0";
+    private static final String API_URL_TEMPLATE = Configurations.getProperty("kladrRequester.apiURLTemplate");
+    private static final String USER_AGENT = Configurations.getProperty("kladrRequester.userAgent");
 
     String makeGetRequest(char letter) {
         var url = String.format(API_URL_TEMPLATE, letter);

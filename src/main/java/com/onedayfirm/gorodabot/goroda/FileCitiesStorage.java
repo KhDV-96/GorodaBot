@@ -1,6 +1,7 @@
 package com.onedayfirm.gorodabot.goroda;
 
 import com.onedayfirm.gorodabot.io.FileReader;
+import com.onedayfirm.gorodabot.utils.Configurations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 public class FileCitiesStorage implements CitiesStorage {
 
-    private static final String PATH = "cities.txt";
+    private static final String PATH = Configurations.getProperty("fileCitiesStorage.file");
 
     private static FileCitiesStorage instance = new FileCitiesStorage();
 

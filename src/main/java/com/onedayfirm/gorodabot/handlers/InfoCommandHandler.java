@@ -4,12 +4,13 @@ import com.onedayfirm.gorodabot.bot.Session;
 import com.onedayfirm.gorodabot.containers.Commands;
 import com.onedayfirm.gorodabot.containers.Phrases;
 import com.onedayfirm.gorodabot.mediawiki.MediaWiki;
+import com.onedayfirm.gorodabot.utils.Configurations;
 
 import java.util.Collection;
 
 public class InfoCommandHandler extends CommandHandler {
 
-    private static final String KEY_WORD = "город";
+    private static final String KEY_WORD = Configurations.getProperty("infoCommandHandler.keyWord");
 
     public InfoCommandHandler() {
         Commands.getInstance().get("INFO").forEach(this::addCommand);

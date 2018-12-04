@@ -1,12 +1,15 @@
 package com.onedayfirm.gorodabot.goroda;
 
+import com.onedayfirm.gorodabot.utils.Configurations;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class KladrCitiesStorage implements CitiesStorage {
 
-    private static final char[] AVAILABLE_LETTERS = "абвгдеёжзийклмнопрстуфхцчшщэюя".toCharArray();
+    private static final char[] AVAILABLE_LETTERS =
+            Configurations.getProperty("kladrCitiesStorage.letters").toCharArray();
 
     private static KladrCitiesStorage instance = new KladrCitiesStorage();
 
