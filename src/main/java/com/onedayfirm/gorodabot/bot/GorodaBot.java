@@ -14,9 +14,10 @@ public class GorodaBot implements Bot {
     private Phrases phrases = Phrases.getInstance();
     private Map<Integer, Session> sessions;
     private Map<String, Handler> commandHandlers;
-    private Collection<MessageHandler> messageHandlers;
+    private Collection<? extends MessageHandler> messageHandlers;
 
-    public GorodaBot(Collection<CommandHandler> commandHandlers, Collection<MessageHandler> messageHandlers) {
+    public GorodaBot(Collection<? extends CommandHandler> commandHandlers,
+                     Collection<? extends MessageHandler> messageHandlers) {
         sessions = new HashMap<>();
         this.messageHandlers = messageHandlers;
         this.commandHandlers = new HashMap<>();
@@ -62,7 +63,7 @@ public class GorodaBot implements Bot {
         responses.add(phrases.get("HELP"));
     }
 
-    private void saveCommandHandlers(Collection<CommandHandler> handlers) {
+    private void saveCommandHandlers(Collection<? extends CommandHandler> handlers) {
         for (var handler : handlers) {
             for (var command : handler.getCommands())
                 commandHandlers.put(command, handler);

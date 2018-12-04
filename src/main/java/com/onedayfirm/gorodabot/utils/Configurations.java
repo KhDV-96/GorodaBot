@@ -23,7 +23,7 @@ public class Configurations {
     }
 
     private void load() {
-        try (var in = FileReader.open(PATH)) {
+        try (var in = FileReader.openForReading(PATH)) {
             properties.load(in);
         } catch (IOException exception) {
             exception.printStackTrace();

@@ -1,8 +1,26 @@
 package com.onedayfirm.gorodabot.goroda;
 
+import com.onedayfirm.gorodabot.utils.Configurations;
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class City {
+
+    private static final Map<Character, Character> SPECIAL_EQUALITIES = new HashMap<>();
+
+    static {
+        var letters = Arrays.stream(Configurations
+                .getProperty("city.specialEqualities")
+                .split(","))
+                .map(s -> s.charAt(0))
+                .toArray(Character[]::new);
+        for (var i = 0; i < letters.length - 1; i += 2) {
+            SPECIAL_EQUALITIES.put(letters[i], letters[i + 1]);
+            SPECIAL_EQUALITIES.put(letters[i + 1], letters[i]);
+        }
+    }
 
     private String name;
     private String alternativeName;
@@ -10,16 +28,8 @@ public class City {
     City(String name) {
         this.name = name.toLowerCase();
         var firstChar = this.name.charAt(0);
-        HashMap<Character, Character> letters = new HashMap<>() {
-            {
-                put('и', 'й');
-                put('й', 'и');
-                put('е', 'ё');
-                put('ё', 'е');
-            }
-        };
-        if (letters.containsKey(firstChar)) {
-            this.alternativeName = letters.get(firstChar) + this.name.substring(1);
+        if (SPECIAL_EQUALITIES.containsKey(firstChar)) {
+            this.alternativeName = SPECIAL_EQUALITIES.get(firstChar) + this.name.substring(1);
         }
     }
 
