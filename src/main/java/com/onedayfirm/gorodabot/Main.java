@@ -7,6 +7,7 @@ import com.onedayfirm.gorodabot.handlers.GorodaGameTurnHandler;
 import com.onedayfirm.gorodabot.handlers.HelpCommandHandler;
 import com.onedayfirm.gorodabot.handlers.InfoCommandHandler;
 import com.onedayfirm.gorodabot.handlers.StartGorodaGameCommandHandler;
+import com.onedayfirm.gorodabot.mediawiki.MediaWiki;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Main {
         var commandHandlers = List.of(
                 new HelpCommandHandler(),
                 new StartGorodaGameCommandHandler(KladrCitiesStorage.getInstance()),
-                new InfoCommandHandler()
+                new InfoCommandHandler(new MediaWiki())
         );
         var messageHandlers = List.of(new GorodaGameTurnHandler());
         var bot = new GorodaBot(commandHandlers, messageHandlers);

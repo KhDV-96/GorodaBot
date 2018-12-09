@@ -18,10 +18,11 @@ public class MediaWiki {
             Pattern.compile(Configurations.getProperty("mediaWiki.shortInfoPattern"), Pattern.DOTALL);
     private static final Pattern PLANE_TEXT_PATTERN =
             Pattern.compile(Configurations.getProperty("mediaWiki.planeTextPattern"), Pattern.DOTALL);
-    private static Map<String, String> cachedQueries = new WeakHashMap<>();
 
-    public static String search(String query, String keyWord) {
-        if (cachedQueries.containsKey(query)){
+    private Map<String, String> cachedQueries = new WeakHashMap<>();
+
+    public String search(String query, String keyWord) {
+        if (cachedQueries.containsKey(query)) {
             return cachedQueries.get(query);
         }
         try (var request = new Request(API_URL)) {
