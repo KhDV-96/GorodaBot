@@ -107,9 +107,8 @@ class GorodaGameTest {
         var city1 = game1.makeFirstTurn();
         var city2 = game2.makeTurn(city1);
         var city3 = game1.makeTurn(city2);
-        var city4 = game2.makeTurn(city3);
 
-        assertTrue(game1.isCorrectTurn(city4));
+        assertTrue(game2.isCorrectTurn(city3));
     }
 
     @Test
