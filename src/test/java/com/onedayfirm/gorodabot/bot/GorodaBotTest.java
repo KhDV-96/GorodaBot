@@ -1,10 +1,15 @@
 package com.onedayfirm.gorodabot.bot;
 
+import com.onedayfirm.gorodabot.handlers.CommandHandler;
+import com.onedayfirm.gorodabot.handlers.MessageHandler;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class GorodaBotTest {
 
@@ -71,25 +76,51 @@ class GorodaBotTest {
     }
 
     @Test
-    void onMessageAnyResponse() {
-        var bot = new GorodaBot(new ArrayList<>(), new ArrayList<>());
+    void onMessageWhenMessage() {
+        var handler = mock(MessageHandler.class, CALLS_REAL_METHODS);
+        when(handler.canHandle(anyString(), any())).thenReturn(true);
+        doAnswer(invocation -> {
+            ((Collection<String>) invocation.getArgument(2)).add("answer");
+            return null;
+        }).when(handler).handle(anyString(), any(), anyCollection());
+        var bot = new GorodaBot(new ArrayList<>(), List.of(handler));
         var id = 1;
         var responses = new ArrayList<String>();
         bot.onConnection(new Session(id), new ArrayList<>());
 
         bot.onMessage(id, "test", responses);
 
-        assertTrue(responses.size() > 0);
+        assertIterableEquals(List.of("answer"), responses);
     }
 
     @Test
-    void onMessageAsCommandAnyResponse() {
-        var bot = new GorodaBot(new ArrayList<>(), new ArrayList<>());
+    void onMessageWhenCommand() {
+        var handler = mock(CommandHandler.class, CALLS_REAL_METHODS);
+        when(handler.getCommands()).thenReturn(List.of("/test"));
+        doAnswer(invocation -> {
+            ((Collection<String>) invocation.getArgument(2)).add("answer");
+            return null;
+        }).when(handler).handle(anyString(), any(), anyCollection());
+        var bot = new GorodaBot(List.of(handler), new ArrayList<>());
         var id = 1;
         var responses = new ArrayList<String>();
         bot.onConnection(new Session(id), new ArrayList<>());
 
         bot.onMessage(id, "/test", responses);
+
+        assertIterableEquals(List.of("answer"), responses);
+    }
+
+    @Test
+    void onMessageWhenUnhandledMessage() {
+        var handler = mock(MessageHandler.class, CALLS_REAL_METHODS);
+        when(handler.canHandle(anyString(), any())).thenReturn(false);
+        var bot = new GorodaBot(new ArrayList<>(), List.of(handler));
+        var id = 1;
+        var responses = new ArrayList<String>();
+        bot.onConnection(new Session(id), new ArrayList<>());
+
+        bot.onMessage(id, "unhandled", responses);
 
         assertTrue(responses.size() > 0);
     }
