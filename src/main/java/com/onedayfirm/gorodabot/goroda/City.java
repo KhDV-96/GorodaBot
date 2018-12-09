@@ -23,7 +23,7 @@ public class City {
         }
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
