@@ -6,7 +6,7 @@
 
     <groupId>com.onedayfirm.gorodabot</groupId>
     <artifactId>gorodabot</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
