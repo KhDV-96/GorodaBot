@@ -33,14 +33,15 @@ public class KladrCitiesStorage implements CitiesStorage {
         }
     }
 
-    private List<City> filterCities(List<City> names, char letter) {
+    List<City> filterCities(List<City> names, char letter) {
         return names
                 .stream()
                 .filter(name -> name.getName().toLowerCase()
-                .startsWith(Character.toString(letter)))
+                    .startsWith(Character.toString(letter)))
+                .filter(name -> Character.isLetter(name.getName()
+                    .charAt(name.getName().length()-1)))
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public Set<Character> getAvailableLetters() {
