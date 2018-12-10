@@ -13,14 +13,19 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        var commandHandlers = List.of(
-                new HelpCommandHandler(),
-                new StartGorodaGameCommandHandler(KladrCitiesStorage.getInstance()),
-                new InfoCommandHandler()
-        );
-        var messageHandlers = List.of(new GorodaGameTurnHandler());
-        var bot = new GorodaBot(commandHandlers, messageHandlers);
-        var client = new ConsoleClient(bot);
-        client.run();
+        try {
+            var commandHandlers = List.of(
+                    new HelpCommandHandler(),
+                    new StartGorodaGameCommandHandler(KladrCitiesStorage.getInstance()),
+                    new InfoCommandHandler()
+            );
+            var messageHandlers = List.of(new GorodaGameTurnHandler());
+            var bot = new GorodaBot(commandHandlers, messageHandlers);
+            var client = new ConsoleClient(bot);
+            client.run();
+        } catch (ExitException exception) {
+            exception.printStackTrace();
+            System.exit(exception.status);
+        }
     }
 }
