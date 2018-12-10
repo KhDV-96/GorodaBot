@@ -1,7 +1,8 @@
 package com.onedayfirm.gorodabot.io;
 
+import com.onedayfirm.gorodabot.ExitException;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -14,11 +15,9 @@ public class FileReader {
     public static List<String> readLines(String path) {
         try (var in = new BufferedReader(openForReading(path))) {
             return in.lines().collect(Collectors.toList());
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            System.exit(1);
+        } catch (Exception exception) {
+            throw new ExitException(exception, 1);
         }
-        return null;
     }
 
     public static Reader openForReading(String path) {

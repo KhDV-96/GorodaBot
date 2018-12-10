@@ -1,7 +1,6 @@
 package com.onedayfirm.gorodabot.handlers;
 
 import com.onedayfirm.gorodabot.bot.Session;
-import com.onedayfirm.gorodabot.containers.Commands;
 import com.onedayfirm.gorodabot.containers.Phrases;
 import com.onedayfirm.gorodabot.mediawiki.MediaWiki;
 import com.onedayfirm.gorodabot.utils.Configurations;
@@ -14,9 +13,9 @@ public class InfoCommandHandler extends CommandHandler {
 
     private MediaWiki wiki;
 
-    public InfoCommandHandler(MediaWiki mediaWiki) {
-        wiki = mediaWiki;
-        Commands.getInstance().get("INFO").forEach(this::addCommand);
+    public InfoCommandHandler(MediaWiki wiki) {
+        super("INFO");
+        this.wiki = wiki;
     }
 
     @Override

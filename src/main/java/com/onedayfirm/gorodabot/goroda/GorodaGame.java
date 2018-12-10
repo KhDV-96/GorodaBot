@@ -1,10 +1,10 @@
 package com.onedayfirm.gorodabot.goroda;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Random;
+import java.util.List;
 
-import static com.onedayfirm.gorodabot.utils.ArrayUtils.mix;
+import static com.onedayfirm.gorodabot.utils.RandomUtils.random;
+import static java.util.Collections.shuffle;
 
 public class GorodaGame {
 
@@ -27,7 +27,7 @@ public class GorodaGame {
         var cities = storage.getCitiesByLetter(lastLetter);
         if (cities == null)
             return null;
-        var nextCity = getRandomCityByLetter(cities);
+        var nextCity = getRandomCity(cities);
         if (nextCity == null)
             return null;
         addUsedCity(city);
@@ -73,11 +73,9 @@ public class GorodaGame {
     }
 
     public String makeFirstTurn() {
-        var firstCharacters = storage.getAvailableLetters().toArray();
-        var random = new Random();
-        var characterNumber = random.nextInt(firstCharacters.length);
-        var cities = storage.getCitiesByLetter((char) firstCharacters[characterNumber]);
-        previousCity = getRandomCityByLetter(cities);
+        var letter = random(storage.getAvailableLetters());
+        var cities = storage.getCitiesByLetter(letter);
+        previousCity = getRandomCity(cities);
         addUsedCity(previousCity);
         return changeFirstLetterToUppercase(previousCity);
     }
@@ -108,10 +106,9 @@ public class GorodaGame {
         return Character.toUpperCase(word.getName().charAt(0)) + word.getName().substring(1);
     }
 
-    private City getRandomCityByLetter(Collection<City> cities) {
-        var citiesArray = cities.toArray(new City[0]);
-        mix(citiesArray);
-        for (var city : citiesArray) {
+    private City getRandomCity(List<City> cities) {
+        shuffle(cities);
+        for (var city : cities) {
             if (!isCityUsed(city))
                 return city;
         }
@@ -119,6 +116,6 @@ public class GorodaGame {
     }
 
     public String getPreviousCity() {
-        return previousCity.getName();
+        return previousCity == null ? null : previousCity.getName();
     }
 }

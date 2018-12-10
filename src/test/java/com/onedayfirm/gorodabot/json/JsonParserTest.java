@@ -70,4 +70,9 @@ class JsonParserTest {
     void getValueKeyNotExists() throws ParseException {
         assertNull(new JsonParser(JSON).getValue("foo"));
     }
+
+    @Test
+    void getValueIsArray() {
+        assertThrows(ParseException.class, () -> new JsonParser(JSON).comeDown("array").getValue("key"));
+    }
 }

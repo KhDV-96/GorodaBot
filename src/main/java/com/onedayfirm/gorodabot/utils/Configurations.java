@@ -1,5 +1,6 @@
 package com.onedayfirm.gorodabot.utils;
 
+import com.onedayfirm.gorodabot.ExitException;
 import com.onedayfirm.gorodabot.io.FileReader;
 
 import java.io.IOException;
@@ -26,8 +27,7 @@ public class Configurations {
         try (var in = FileReader.openForReading(PATH)) {
             properties.load(in);
         } catch (IOException exception) {
-            exception.printStackTrace();
-            System.exit(1);
+            throw new ExitException(exception, 1);
         }
     }
 }

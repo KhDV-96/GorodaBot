@@ -1,7 +1,6 @@
 package com.onedayfirm.gorodabot.handlers;
 
 import com.onedayfirm.gorodabot.bot.Session;
-import com.onedayfirm.gorodabot.containers.Commands;
 import com.onedayfirm.gorodabot.goroda.CitiesStorage;
 import com.onedayfirm.gorodabot.goroda.GorodaGame;
 
@@ -12,8 +11,8 @@ public class StartGorodaGameCommandHandler extends CommandHandler {
     private CitiesStorage storage;
 
     public StartGorodaGameCommandHandler(CitiesStorage storage) {
+        super("GAME");
         this.storage = storage;
-        Commands.getInstance().get("GAME").forEach(this::addCommand);
     }
 
     @Override
