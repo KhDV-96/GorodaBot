@@ -1,9 +1,9 @@
 package com.onedayfirm.gorodabot.handlers;
 
+import com.onedayfirm.gorodabot.containers.Commands;
 import com.onedayfirm.gorodabot.utils.Configurations;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 public abstract class CommandHandler implements Handler {
 
@@ -11,8 +11,8 @@ public abstract class CommandHandler implements Handler {
 
     private Collection<String> commands;
 
-    CommandHandler() {
-        commands = new LinkedList<>();
+    CommandHandler(String commandName) {
+        commands = Commands.getInstance().get(commandName);
     }
 
     public static boolean isCommand(String string) {
@@ -21,9 +21,5 @@ public abstract class CommandHandler implements Handler {
 
     public final Collection<String> getCommands() {
         return commands;
-    }
-
-    void addCommand(String command) {
-        commands.add(command);
     }
 }
