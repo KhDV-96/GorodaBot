@@ -19,7 +19,8 @@ public class Configurations {
     }
 
     public static String getProperty(String key) {
-        return instance.properties.getProperty(key);
+        var property = instance.properties.getProperty(key) ;
+        return property == null ? System.getenv(key) : property;
     }
 
     private void load() {
