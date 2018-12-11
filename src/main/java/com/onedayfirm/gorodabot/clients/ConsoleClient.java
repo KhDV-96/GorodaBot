@@ -24,7 +24,7 @@ public class ConsoleClient extends Client {
     }
 
     @Override
-    public void send(int id, String message) {
+    public void send(long id, String message) {
         System.out.println(message);
     }
 }

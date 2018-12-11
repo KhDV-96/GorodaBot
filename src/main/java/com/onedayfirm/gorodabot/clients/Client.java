@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public abstract class Client implements Runnable {
 
-    private Bot bot;
+    Bot bot;
 
     Client(Bot bot) {
         this.bot = bot;
@@ -15,7 +15,7 @@ public abstract class Client implements Runnable {
 
     public abstract void run();
 
-    abstract void send(int id, String message);
+    abstract void send(long id, String message);
 
     void handleConnection(Session session) {
         var responses = new LinkedList<String>();
@@ -23,7 +23,7 @@ public abstract class Client implements Runnable {
         responses.forEach(text -> send(session.getId(), text));
     }
 
-    void handleMessage(int id, String message) {
+    void handleMessage(long id, String message) {
         if (message.isEmpty())
             return;
         var responses = new LinkedList<String>();
