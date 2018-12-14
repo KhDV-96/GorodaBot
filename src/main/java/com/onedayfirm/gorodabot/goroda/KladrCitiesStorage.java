@@ -1,14 +1,18 @@
 package com.onedayfirm.gorodabot.goroda;
 
 import com.onedayfirm.gorodabot.utils.Configurations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.*;
+import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
 public class KladrCitiesStorage implements CitiesStorage {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KladrCitiesStorage.class);
     private static final Set<Character> AVAILABLE_LETTERS;
 
     private Map<Character, List<City>> cities = new WeakHashMap<>();
@@ -34,13 +38,15 @@ public class KladrCitiesStorage implements CitiesStorage {
         if (cities.containsKey(letter)){
             return cities.get(letter);
         }
+        LOGGER.info("Requesting cities on letter '{}' from kladr", letter);
         try {
             var json = requester.makeGetRequest(letter);
             var names = filterCities(requester.getNames(json), letter);
             cities.put(letter, names);
+            LOGGER.info("Cities received: count = {}", names.size());
             return names;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            LOGGER.error("Error of getting cities by letter", exception);
             return null;
         }
     }

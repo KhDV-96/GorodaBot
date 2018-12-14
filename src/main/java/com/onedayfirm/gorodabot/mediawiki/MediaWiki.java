@@ -5,6 +5,8 @@ import com.onedayfirm.gorodabot.json.ParseException;
 import com.onedayfirm.gorodabot.network.Request;
 import com.onedayfirm.gorodabot.network.RequestException;
 import com.onedayfirm.gorodabot.utils.Configurations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -18,6 +20,7 @@ public class MediaWiki {
             Pattern.compile(Configurations.getProperty("mediaWiki.shortInfoPattern"), Pattern.DOTALL);
     private static final Pattern PLANE_TEXT_PATTERN =
             Pattern.compile(Configurations.getProperty("mediaWiki.planeTextPattern"), Pattern.DOTALL);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MediaWiki.class);
 
     private Map<String, String> cachedQueries = new WeakHashMap<>();
 
@@ -25,6 +28,7 @@ public class MediaWiki {
         if (cachedQueries.containsKey(query)) {
             return cachedQueries.get(query);
         }
+        LOGGER.info("Searching in MediaWiki: {}", query);
         try (var request = new Request(API_URL)) {
             var searchParams = getSearchParameters(String.format(TEMPLATE, query, keyWord));
             var response = request.get(searchParams);
@@ -32,8 +36,10 @@ public class MediaWiki {
             var json = request.get(getContentQueryParameters(pageId.toString()));
             var content = extractContent(json, pageId);
             cachedQueries.put(query, content);
+            LOGGER.info("The information was found: page id = {}", pageId);
             return content;
         } catch (NullPointerException | RequestException | ParseException exception) {
+            LOGGER.error("The information didn't found", exception);
             return null;
         }
     }
@@ -77,7 +83,7 @@ public class MediaWiki {
         var matcher = SHORT_INFO_PATTERN.matcher(htmlContent);
         if (matcher.find())
             return PLANE_TEXT_PATTERN.matcher(matcher.group(1)).replaceAll("");
-        else
-            return null;
+        LOGGER.error("Can't extract content");
+        return null;
     }
 }

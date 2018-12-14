@@ -2,12 +2,16 @@ package com.onedayfirm.gorodabot.clients;
 
 import com.onedayfirm.gorodabot.bot.Bot;
 import com.onedayfirm.gorodabot.bot.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class ConsoleClient extends Client {
 
-    private final int static_id = hashCode();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleClient.class);
+
+    private final int staticId = hashCode();
 
     private Scanner scanner;
 
@@ -18,9 +22,10 @@ public class ConsoleClient extends Client {
 
     @Override
     public void run() {
-        handleConnection(new Session(static_id));
+        LOGGER.info("Console client started (static id = {})", staticId);
+        handleConnection(new Session(staticId));
         while (!Thread.interrupted())
-            handleMessage(static_id, scanner.nextLine());
+            handleMessage(staticId, scanner.nextLine());
     }
 
     @Override

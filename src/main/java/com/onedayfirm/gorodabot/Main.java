@@ -8,12 +8,17 @@ import com.onedayfirm.gorodabot.handlers.HelpCommandHandler;
 import com.onedayfirm.gorodabot.handlers.InfoCommandHandler;
 import com.onedayfirm.gorodabot.handlers.StartGorodaGameCommandHandler;
 import com.onedayfirm.gorodabot.mediawiki.MediaWiki;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class Main {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
+        LOGGER.info("The bot is initializing");
         try {
             var commandHandlers = List.of(
                     new HelpCommandHandler(),
@@ -25,8 +30,10 @@ public class Main {
             var client = new ConsoleClient(bot);
             client.run();
         } catch (ExitException exception) {
-            exception.printStackTrace();
+            LOGGER.error("Emergency shutdown", exception);
             System.exit(exception.status);
+        } catch (Error error) {
+            LOGGER.error("Unexpected error", error);
         }
     }
 }

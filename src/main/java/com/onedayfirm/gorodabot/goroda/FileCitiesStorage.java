@@ -2,6 +2,8 @@ package com.onedayfirm.gorodabot.goroda;
 
 import com.onedayfirm.gorodabot.io.FileReader;
 import com.onedayfirm.gorodabot.utils.Configurations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.Set;
 
 public class FileCitiesStorage implements CitiesStorage {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileCitiesStorage.class);
     private static final String PATH = Configurations.getProperty("fileCitiesStorage.file");
 
     private static FileCitiesStorage instance = new FileCitiesStorage();
@@ -19,6 +22,7 @@ public class FileCitiesStorage implements CitiesStorage {
     private FileCitiesStorage() {
         cities = new HashMap<>();
         FileReader.readLines(PATH).forEach(this::addCity);
+        LOGGER.info("Cities loaded from the file {}", PATH);
     }
 
     public static FileCitiesStorage getInstance() {
