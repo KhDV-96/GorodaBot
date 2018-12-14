@@ -4,13 +4,13 @@ import com.onedayfirm.gorodabot.json.JsonParser;
 import com.onedayfirm.gorodabot.json.ParseException;
 import com.onedayfirm.gorodabot.network.Request;
 import com.onedayfirm.gorodabot.network.RequestException;
+import com.onedayfirm.gorodabot.search.SearchService;
 import com.onedayfirm.gorodabot.utils.Configurations;
 
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
-public class MediaWiki {
+public class MediaWiki implements SearchService<String, String> {
 
     private static final String API_URL = Configurations.getProperty("mediaWiki.apiURL");
     private static final String TEMPLATE = Configurations.getProperty("mediaWiki.searchTemplate");
@@ -19,20 +19,13 @@ public class MediaWiki {
     private static final Pattern PLANE_TEXT_PATTERN =
             Pattern.compile(Configurations.getProperty("mediaWiki.planeTextPattern"), Pattern.DOTALL);
 
-    private Map<String, String> cachedQueries = new WeakHashMap<>();
-
-    public String search(String query, String keyWord) {
-        if (cachedQueries.containsKey(query)) {
-            return cachedQueries.get(query);
-        }
+    public String search(String query) {
         try (var request = new Request(API_URL)) {
-            var searchParams = getSearchParameters(String.format(TEMPLATE, query, keyWord));
+            var searchParams = getSearchParameters(String.format(TEMPLATE, query));
             var response = request.get(searchParams);
             var pageId = extractPageId(response, query.toLowerCase());
             var json = request.get(getContentQueryParameters(pageId.toString()));
-            var content = extractContent(json, pageId);
-            cachedQueries.put(query, content);
-            return content;
+            return extractContent(json, pageId);
         } catch (NullPointerException | RequestException | ParseException exception) {
             return null;
         }
@@ -41,7 +34,7 @@ public class MediaWiki {
     private static Map<String, String> getSearchParameters(String query) {
         return Map.of(
                 "action", "query",
-                "list", "search",
+                "list", "mediawiki",
                 "srsearch", query,
                 "format", "json",
                 "formatversion", "2"
@@ -51,7 +44,7 @@ public class MediaWiki {
     private static Long extractPageId(String json, String query) throws ParseException {
         return (Long) new JsonParser(json)
                 .comeDown("query")
-                .comeDown("search")
+                .comeDown("mediawiki")
                 .choose(entry -> ((String) entry.get("title")).toLowerCase().contains(query))
                 .getValue("pageid");
     }

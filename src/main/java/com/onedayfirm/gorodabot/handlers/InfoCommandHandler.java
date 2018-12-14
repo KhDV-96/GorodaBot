@@ -2,20 +2,17 @@ package com.onedayfirm.gorodabot.handlers;
 
 import com.onedayfirm.gorodabot.bot.Session;
 import com.onedayfirm.gorodabot.containers.Phrases;
-import com.onedayfirm.gorodabot.mediawiki.MediaWiki;
-import com.onedayfirm.gorodabot.utils.Configurations;
+import com.onedayfirm.gorodabot.search.SearchService;
 
 import java.util.Collection;
 
 public class InfoCommandHandler extends CommandHandler {
 
-    private static final String KEY_WORD = Configurations.getProperty("infoCommandHandler.keyWord");
+    private SearchService<String, String> searchService;
 
-    private MediaWiki wiki;
-
-    public InfoCommandHandler(MediaWiki wiki) {
+    public InfoCommandHandler(SearchService<String, String> service) {
         super("INFO");
-        this.wiki = wiki;
+        searchService = service;
     }
 
     @Override
@@ -25,7 +22,7 @@ public class InfoCommandHandler extends CommandHandler {
             responses.add(Phrases.getInstance().get("NO PREVIOUS CITY"));
             return;
         }
-        var response = wiki.search(game.getPreviousCity(), KEY_WORD);
+        var response = searchService.search(game.getPreviousCity());
         if (response == null)
             response = Phrases.getInstance().get("NO INFO");
         responses.add(response);

@@ -36,7 +36,7 @@ class InfoCommandHandlerTest {
     void handleHasInformation() {
         var info = "info";
         var wiki = mock(MediaWiki.class);
-        when(wiki.search(anyString(), anyString())).thenReturn(info);
+        when(wiki.search(anyString())).thenReturn(info);
         var handler = new InfoCommandHandler(wiki);
         var game = mock(GorodaGame.class);
         when(game.getPreviousCity()).thenReturn("City");
@@ -48,7 +48,7 @@ class InfoCommandHandlerTest {
 
         assertTrue(responses.size() > 0);
         assertIterableEquals(List.of(info), responses);
-        verify(wiki, times(1)).search(anyString(), anyString());
+        verify(wiki, times(1)).search(anyString());
     }
 
     @Test
@@ -64,6 +64,6 @@ class InfoCommandHandlerTest {
         handler.handle(null, session, responses);
 
         assertTrue(responses.size() > 0);
-        verify(wiki, times(1)).search(anyString(), anyString());
+        verify(wiki, times(1)).search(anyString());
     }
 }
