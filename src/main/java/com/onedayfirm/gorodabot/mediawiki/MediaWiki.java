@@ -34,7 +34,7 @@ public class MediaWiki implements SearchService<String, String> {
     private static Map<String, String> getSearchParameters(String query) {
         return Map.of(
                 "action", "query",
-                "list", "mediawiki",
+                "list", "search",
                 "srsearch", query,
                 "format", "json",
                 "formatversion", "2"
@@ -44,7 +44,7 @@ public class MediaWiki implements SearchService<String, String> {
     private static Long extractPageId(String json, String query) throws ParseException {
         return (Long) new JsonParser(json)
                 .comeDown("query")
-                .comeDown("mediawiki")
+                .comeDown("search")
                 .choose(entry -> ((String) entry.get("title")).toLowerCase().contains(query))
                 .getValue("pageid");
     }
