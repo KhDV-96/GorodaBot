@@ -4,15 +4,15 @@ import com.onedayfirm.gorodabot.json.JsonParser;
 import com.onedayfirm.gorodabot.json.ParseException;
 import com.onedayfirm.gorodabot.network.Request;
 import com.onedayfirm.gorodabot.network.RequestException;
+import com.onedayfirm.gorodabot.search.SearchService;
 import com.onedayfirm.gorodabot.utils.Configurations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
-public class MediaWiki {
+public class MediaWiki implements SearchService<String, String> {
 
     private static final String API_URL = Configurations.getProperty("mediaWiki.apiURL");
     private static final String TEMPLATE = Configurations.getProperty("mediaWiki.searchTemplate");
@@ -22,22 +22,15 @@ public class MediaWiki {
             Pattern.compile(Configurations.getProperty("mediaWiki.planeTextPattern"), Pattern.DOTALL);
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaWiki.class);
 
-    private Map<String, String> cachedQueries = new WeakHashMap<>();
-
-    public String search(String query, String keyWord) {
-        if (cachedQueries.containsKey(query)) {
-            return cachedQueries.get(query);
-        }
+    public String search(String query) {
         LOGGER.info("Searching in MediaWiki: {}", query);
         try (var request = new Request(API_URL)) {
-            var searchParams = getSearchParameters(String.format(TEMPLATE, query, keyWord));
+            var searchParams = getSearchParameters(String.format(TEMPLATE, query));
             var response = request.get(searchParams);
             var pageId = extractPageId(response, query.toLowerCase());
             var json = request.get(getContentQueryParameters(pageId.toString()));
-            var content = extractContent(json, pageId);
-            cachedQueries.put(query, content);
             LOGGER.info("The information was found: page id = {}", pageId);
-            return content;
+            return extractContent(json, pageId);
         } catch (NullPointerException | RequestException | ParseException exception) {
             LOGGER.error("The information didn't found", exception);
             return null;
