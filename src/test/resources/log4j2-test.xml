@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ERROR">
+    <Appenders>
+        <Console name="Null" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern/>
+                <alwaysWriteExceptions>false</alwaysWriteExceptions>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="Null"/>
+        </Root>
+    </Loggers>
+</Configuration>
