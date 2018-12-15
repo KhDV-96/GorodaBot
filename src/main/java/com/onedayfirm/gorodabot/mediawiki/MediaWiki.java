@@ -32,7 +32,7 @@ public class MediaWiki implements SearchService<String, String> {
             LOGGER.info("The information was found: page id = {}", pageId);
             return extractContent(json, pageId);
         } catch (NullPointerException | RequestException | ParseException exception) {
-            LOGGER.error("The information didn't found", exception);
+            LOGGER.error("The information wasn't found", exception);
             return null;
         }
     }
@@ -76,7 +76,7 @@ public class MediaWiki implements SearchService<String, String> {
         var matcher = SHORT_INFO_PATTERN.matcher(htmlContent);
         if (matcher.find())
             return PLANE_TEXT_PATTERN.matcher(matcher.group(1)).replaceAll("");
-        LOGGER.error("Can't extract content");
+        LOGGER.warn("Can't extract content");
         return null;
     }
 }
