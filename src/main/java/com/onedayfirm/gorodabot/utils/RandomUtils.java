@@ -5,14 +5,16 @@ import java.util.Random;
 
 public class RandomUtils {
 
-    private static Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     public static <T> T random(Collection<? extends T> collection) {
-        var index = random.nextInt(collection.size());
-        for (var item : collection) {
-            if (--index < 0)
-                return item;
+        if (collection.size() > 0) {
+            var index = RANDOM.nextInt(collection.size());
+            for (var item : collection) {
+                if (--index < 0)
+                    return item;
+            }
         }
-        throw new AssertionError();
+        throw new IllegalArgumentException(collection + " is empty");
     }
 }
