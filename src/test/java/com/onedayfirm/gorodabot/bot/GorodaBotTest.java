@@ -76,6 +76,7 @@ class GorodaBotTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void onMessageWhenMessage() {
         var handler = mock(MessageHandler.class, CALLS_REAL_METHODS);
         when(handler.canHandle(anyString(), any())).thenReturn(true);
@@ -94,6 +95,7 @@ class GorodaBotTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void onMessageWhenCommand() {
         var handler = mock(CommandHandler.class, CALLS_REAL_METHODS);
         when(handler.getCommands()).thenReturn(List.of("/test"));
