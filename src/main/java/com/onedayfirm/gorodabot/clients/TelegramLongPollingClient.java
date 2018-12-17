@@ -8,12 +8,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class TelegramLongPollingClient extends TelegramLongPollingBot {
 
-    private TelegramClient delegate;
+    private Client delegate;
     private String token;
     private String botName;
 
-    TelegramLongPollingClient(TelegramClient main, String token, String botName){
-        this.delegate = main;
+    TelegramLongPollingClient(Client main, String token, String botName) {
+        delegate = main;
         this.token = token;
         this.botName = botName;
     }
@@ -23,10 +23,10 @@ public class TelegramLongPollingClient extends TelegramLongPollingBot {
         var message = update.getMessage();
         var text = message.getText();
         var id = message.getChatId();
-        if (!delegate.isSessionExists(id)){
-            delegate.handleConnection(new Session(id));
-        } else {
+        if (delegate.bot.isUserConnected(id)) {
             delegate.handleMessage(id, text);
+        } else {
+            delegate.handleConnection(new Session(id));
         }
     }
 
@@ -41,10 +41,10 @@ public class TelegramLongPollingClient extends TelegramLongPollingBot {
     }
 
     void sendMessage(long id, String message) {
-        var sendMessage = new SendMessage();
-        sendMessage.setChatId(id);
-        sendMessage.setText(message);
-        try{
+        var sendMessage = new SendMessage()
+                .setChatId(id)
+                .setText(message);
+        try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
