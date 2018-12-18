@@ -19,7 +19,7 @@ public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        LOGGER.info("The bot is initializing");
+        LOGGER.info("The bot is initializing...");
         try {
             var commandHandlers = List.of(
                     new HelpCommandHandler(),
@@ -28,10 +28,11 @@ public class Main {
             );
             var messageHandlers = List.of(new GorodaGameTurnHandler());
             var bot = new GorodaBot(commandHandlers, messageHandlers);
+            LOGGER.info("Bot initialization completed");
             var client = new TelegramClient(bot);
             client.run();
         } catch (ExitException exception) {
-            LOGGER.error("Emergency shutdown", exception);
+            LOGGER.error("Emergency shutdown", exception.getCause());
             System.exit(exception.status);
         } catch (Error error) {
             LOGGER.error("Unexpected error", error);

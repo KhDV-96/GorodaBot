@@ -22,7 +22,7 @@ class KladrRequester implements SearchService<Character, List<City>> {
     @Override
     public List<City> search(Character query) {
         var letter = query.toString();
-        LOGGER.info("Requesting cities on letter '{}' from kladr", letter);
+        LOGGER.debug("Requesting cities on letter '{}' from kladr", letter);
         try {
             var json = makeGetRequest(letter);
             return getNames(json, letter);

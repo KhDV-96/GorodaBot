@@ -23,13 +23,13 @@ public class MediaWiki implements SearchService<String, String> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MediaWiki.class);
 
     public String search(String query) {
-        LOGGER.info("Searching in MediaWiki: {}", query);
+        LOGGER.debug("Searching in MediaWiki: {}", query);
         try (var request = new Request(API_URL)) {
             var searchParams = getSearchParameters(String.format(TEMPLATE, query));
             var response = request.get(searchParams);
             var pageId = extractPageId(response, query.toLowerCase());
             var json = request.get(getContentQueryParameters(pageId.toString()));
-            LOGGER.info("The information was found: page id = {}", pageId);
+            LOGGER.debug("The information was found: page id = {}", pageId);
             return extractContent(json, pageId);
         } catch (NullPointerException | RequestException | ParseException exception) {
             LOGGER.error("The information wasn't found", exception);

@@ -28,11 +28,10 @@ public class TelegramLongPollingClient extends TelegramLongPollingBot {
         var text = message.getText();
         var id = message.getChatId();
         if (delegate.bot.isUserConnected(id)) {
-            LOGGER.info("Received message: {id = {}, name = {}, message = '{}'}",
-                    id, message.getFrom().getUserName(), text);
+            LOGGER.info("Received: {id={}, name={}, text='{}'}", id, message.getFrom().getUserName(), text);
             delegate.handleMessage(id, text);
         } else {
-            LOGGER.info("User connected {id = {}, name = {}}", id, message.getFrom().getUserName());
+            LOGGER.info("User connected {id={}, name={}}", id, message.getFrom().getUserName());
             delegate.handleConnection(new Session(id));
         }
     }
@@ -53,8 +52,9 @@ public class TelegramLongPollingClient extends TelegramLongPollingBot {
                 .setText(message);
         try {
             execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+            LOGGER.info("Sent: {id={}, text='{}'}", id, message);
+        } catch (TelegramApiException exception) {
+            LOGGER.error("TelegramLongPollingClient bot could not send the message", exception);
         }
     }
 }

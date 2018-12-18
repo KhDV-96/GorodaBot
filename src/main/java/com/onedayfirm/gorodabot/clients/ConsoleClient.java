@@ -26,7 +26,7 @@ public class ConsoleClient extends Client {
         handleConnection(new Session(staticId));
         while (!Thread.interrupted()) {
             var message = scanner.nextLine();
-            LOGGER.info("Received message: {id={}, message='{}'}", staticId, message);
+            LOGGER.info("Received: {id={}, message='{}'}", staticId, message);
             handleMessage(staticId, message);
         }
     }
@@ -34,5 +34,6 @@ public class ConsoleClient extends Client {
     @Override
     public void send(long id, String message) {
         System.out.println(message);
+        LOGGER.info("Sent: {text='{}'}", message);
     }
 }
