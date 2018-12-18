@@ -1,7 +1,7 @@
 package com.onedayfirm.gorodabot;
 
 import com.onedayfirm.gorodabot.bot.GorodaBot;
-import com.onedayfirm.gorodabot.clients.ConsoleClient;
+import com.onedayfirm.gorodabot.clients.TelegramClient;
 import com.onedayfirm.gorodabot.goroda.KladrCitiesStorage;
 import com.onedayfirm.gorodabot.handlers.GorodaGameTurnHandler;
 import com.onedayfirm.gorodabot.handlers.HelpCommandHandler;
@@ -28,7 +28,7 @@ public class Main {
             );
             var messageHandlers = List.of(new GorodaGameTurnHandler());
             var bot = new GorodaBot(commandHandlers, messageHandlers);
-            var client = new ConsoleClient(bot);
+            var client = new TelegramClient(bot);
             client.run();
         } catch (ExitException exception) {
             LOGGER.error("Emergency shutdown", exception);

@@ -75,5 +75,10 @@
             <version>2.23.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>4.1</version>
+        </dependency>
     </dependencies>
 </project>

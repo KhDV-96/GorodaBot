@@ -4,11 +4,11 @@ import java.util.Collection;
 
 public interface Bot {
 
-    boolean isUserConnected(int id);
+    boolean isUserConnected(long id);
 
-    Session getUserSession(int id);
+    Session getUserSession(long id);
 
     void onConnection(Session session, Collection<String> responses);
 
-    void onMessage(int id, String message, Collection<String> responses);
+    void onMessage(long id, String message, Collection<String> responses);
 }

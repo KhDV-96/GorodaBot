@@ -36,7 +36,7 @@ class ClientTest {
         client.handleConnection(new Session(0));
 
         verify(bot, atLeastOnce()).onConnection(any(Session.class), anyCollection());
-        verify(client, times(n)).send(anyInt(), anyString());
+        verify(client, times(n)).send(anyLong(), anyString());
     }
 
     @Test
@@ -57,8 +57,8 @@ class ClientTest {
 
         client.handleMessage(0, "message");
 
-        verify(bot, atLeastOnce()).onMessage(anyInt(), anyString(), anyCollection());
-        verify(client, never()).send(anyInt(), anyString());
+        verify(bot, atLeastOnce()).onMessage(anyLong(), anyString(), anyCollection());
+        verify(client, never()).send(anyLong(), anyString());
     }
 
     @Test
@@ -72,12 +72,12 @@ class ClientTest {
             for (var i = 0; i < n; i++)
                 responses.add("");
             return null;
-        }).when(bot).onMessage(anyInt(), anyString(), anyCollection());
+        }).when(bot).onMessage(anyLong(), anyString(), anyCollection());
 
         client.handleMessage(0, "message");
 
-        verify(bot, atLeastOnce()).onMessage(anyInt(), anyString(), anyCollection());
-        verify(client, times(n)).send(anyInt(), anyString());
+        verify(bot, atLeastOnce()).onMessage(anyLong(), anyString(), anyCollection());
+        verify(client, times(n)).send(anyLong(), anyString());
     }
 
     static class PrimitiveClient extends Client {
@@ -92,7 +92,7 @@ class ClientTest {
         }
 
         @Override
-        void send(int id, String message) {
+        void send(long id, String message) {
             // pass
         }
     }

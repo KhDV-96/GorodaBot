@@ -12,7 +12,7 @@ import java.util.Map;
 public class GorodaBot implements Bot {
 
     private Phrases phrases = Phrases.getInstance();
-    private Map<Integer, Session> sessions;
+    private Map<Long, Session> sessions;
     private Map<String, Handler> commandHandlers;
     private Collection<? extends MessageHandler> messageHandlers;
 
@@ -24,11 +24,11 @@ public class GorodaBot implements Bot {
         saveCommandHandlers(commandHandlers);
     }
 
-    public boolean isUserConnected(int id) {
+    public boolean isUserConnected(long id) {
         return sessions.containsKey(id);
     }
 
-    public Session getUserSession(int id) {
+    public Session getUserSession(long id) {
         return sessions.get(id);
     }
 
@@ -39,7 +39,7 @@ public class GorodaBot implements Bot {
         responses.add(phrases.get("HELP"));
     }
 
-    public void onMessage(int id, String message, Collection<String> responses) {
+    public void onMessage(long id, String message, Collection<String> responses) {
         var session = sessions.get(id);
         var handler = getHandler(message, session);
         if (handler == null)

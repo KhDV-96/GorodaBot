@@ -4,14 +4,14 @@ import com.onedayfirm.gorodabot.goroda.GorodaGame;
 
 public class Session {
 
-    private int id;
+    private long id;
     private GorodaGame gorodaGame;
 
-    public Session(int id) {
+    public Session(long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -34,6 +34,6 @@ public class Session {
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(id);
+        return Long.hashCode(id);
     }
 }
