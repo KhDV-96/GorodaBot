@@ -1,8 +1,15 @@
 package com.onedayfirm.gorodabot.goroda;
 
+import com.onedayfirm.gorodabot.utils.Configurations;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyChar;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class GorodaGameTest {
 
@@ -24,6 +31,34 @@ class GorodaGameTest {
         var city = game.makeTurn("foobar");
 
         assertNull(city);
+    }
+
+    @Test
+    void makeTurnNoCities() {
+        var cities = new ArrayList<City>();
+        cities.add(new City("city"));
+        var storage = mock(CitiesStorage.class);
+        when(storage.getAvailableLetters()).thenReturn(Set.of('c'));
+        when(storage.getCitiesByLetter(anyChar()))
+                .thenReturn(cities)
+                .thenReturn(new ArrayList<>());
+        var game = new GorodaGame(storage);
+        game.makeFirstTurn();
+
+        assertNull(game.makeTurn("city"));
+    }
+
+    @Test
+    void makeTurnAllCitiesAreUsed() {
+        var cities = new ArrayList<City>();
+        cities.add(new City("city"));
+        var storage = mock(CitiesStorage.class);
+        when(storage.getAvailableLetters()).thenReturn(Set.of('c'));
+        when(storage.getCitiesByLetter(anyChar())).thenReturn(cities);
+        var game = new GorodaGame(storage);
+        game.makeFirstTurn();
+
+        assertNull(game.makeTurn("city"));
     }
 
     @Test
@@ -113,10 +148,32 @@ class GorodaGameTest {
 
     @Test
     void isCorrectTurnFalse() {
-        var game1 = new GorodaGame(storage);
-        game1.makeFirstTurn();
+        var game = new GorodaGame(storage);
+        game.makeFirstTurn();
 
-        assertFalse(game1.isCorrectTurn("city"));
+        assertFalse(game.isCorrectTurn("city"));
+    }
+
+    @Test
+    void isCorrectTurnFirstCity() {
+        var game = new GorodaGame(storage);
+
+        assertTrue(game.isCorrectTurn("city"));
+    }
+
+    @Test
+    void isCorrectTurnAlternativeName() {
+        var specialLetter = Configurations.getProperty("city.specialEqualities").charAt(0);
+        var cities = new ArrayList<City>();
+        cities.add(new City(Character.toString(specialLetter)));
+        var storage = mock(CitiesStorage.class);
+        when(storage.getAvailableLetters()).thenReturn(Set.of(specialLetter));
+        when(storage.getCitiesByLetter(anyChar())).thenReturn(cities);
+        var game = new GorodaGame(storage);
+
+        game.makeFirstTurn();
+
+        assertTrue(game.isCorrectTurn(storage.getCitiesByLetter(specialLetter).get(0).getAlternativeName()));
     }
 
     @Test
@@ -127,5 +184,20 @@ class GorodaGameTest {
         game2.makeTurn(city);
 
         assertTrue(game2.isCityUsed(city));
+    }
+
+    @Test
+    void getPreviousCityNull() {
+        var game = new GorodaGame(storage);
+
+        assertNull(game.getPreviousCity());
+    }
+
+    @Test
+    void getPreviousCityNotNull() {
+        var game = new GorodaGame(storage);
+        var city = game.makeFirstTurn().toLowerCase();
+
+        assertEquals(city, game.getPreviousCity());
     }
 }
