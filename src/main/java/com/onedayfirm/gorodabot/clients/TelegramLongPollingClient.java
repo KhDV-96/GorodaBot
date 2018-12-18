@@ -1,12 +1,16 @@
 package com.onedayfirm.gorodabot.clients;
 
 import com.onedayfirm.gorodabot.bot.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class TelegramLongPollingClient extends TelegramLongPollingBot {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TelegramLongPollingClient.class);
 
     private Client delegate;
     private String token;
@@ -24,8 +28,11 @@ public class TelegramLongPollingClient extends TelegramLongPollingBot {
         var text = message.getText();
         var id = message.getChatId();
         if (delegate.bot.isUserConnected(id)) {
+            LOGGER.info("Received message: {id = {}, name = {}, message = '{}'}",
+                    id, message.getFrom().getUserName(), text);
             delegate.handleMessage(id, text);
         } else {
+            LOGGER.info("User connected {id = {}, name = {}}", id, message.getFrom().getUserName());
             delegate.handleConnection(new Session(id));
         }
     }

@@ -24,8 +24,11 @@ public class ConsoleClient extends Client {
     public void run() {
         LOGGER.info("Console client started (static id = {})", staticId);
         handleConnection(new Session(staticId));
-        while (!Thread.interrupted())
-            handleMessage(staticId, scanner.nextLine());
+        while (!Thread.interrupted()) {
+            var message = scanner.nextLine();
+            LOGGER.info("Received message: {id={}, message='{}'}", staticId, message);
+            handleMessage(staticId, message);
+        }
     }
 
     @Override
